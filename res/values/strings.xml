@@ -9,5 +9,6 @@
     <string name="title_activity_timeline">TimelineActivity</string>
     <string name="foo_label">\@foo</string>
     <string name="tweet_body">This is the tweet body</string>
+    <string name="time_ago_label">Time</string>
 
 </resources>
