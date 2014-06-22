@@ -43,6 +43,10 @@
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.codepath.apps.basictwitter.TimelineActivity"
+            android:label="@string/title_activity_timeline" >
+        </activity>
     </application>
 
 </manifest>

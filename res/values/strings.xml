@@ -6,5 +6,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_photos">Flickr Photos</string>
     <string name="login_label">Connect to Twitter</string>
+    <string name="title_activity_timeline">TimelineActivity</string>
 
 </resources>
