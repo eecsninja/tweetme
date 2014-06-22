@@ -47,6 +47,11 @@ public class Tweet {
 		return tweet_array;
 	}
 
+	@Override
+	public String toString() {
+		return getUser().getScreenName() + ": " + getBody();
+	}
+
 	public String getBody() {
 		return body;
 	}
