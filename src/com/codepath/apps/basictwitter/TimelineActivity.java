@@ -18,6 +18,10 @@ public class TimelineActivity extends Activity {
 	private TweetArrayAdapter tweets_adapter;
 	private ListView tweets_view;
 
+	// Store the oldest and newest tweet IDs.
+	long oldest_id = Long.MAX_VALUE;
+	long newest_id = 1;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,24 +50,20 @@ public class TimelineActivity extends Activity {
 		// Determine a start ID for getting tweets. If there are no existing
 		// tweets loaded, then load as many as possible. Otherwise, look for
 		// the lowest ID and start below that.
-		// TODO: iterating over all tweets every time is inefficient. Need to
-		// cache this somehow.
+		String start_id = "1";	// TODO: Use this for loading newer tweets.
 		String max_id = null;
-		if (tweets != null && !tweets.isEmpty()) {
-			long lowest_id = Long.MAX_VALUE;
-			for (int i = 0; i < tweets.size(); ++i) {
-				long tweet_id = tweets.get(i).getId();
-				if (tweet_id < lowest_id) {
-					lowest_id = tweet_id;
-				}
-			}
-			max_id = Long.toString(lowest_id - 1);
+		if (!tweets.isEmpty()) {
+			max_id = Long.toString(oldest_id - 1);
 		}
 		// Define a custom handler.
 		client.getHomeTimeline(new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONArray array) {
-				tweets_adapter.addAll(Tweet.fromJSONArray(array));
+				ArrayList<Tweet> new_tweets = Tweet.fromJSONArray(array);
+				// Determine newest and oldest tweet IDs.
+				setMinAndMaxIDs(new_tweets);
+				// Add new tweets to views.
+				tweets_adapter.addAll(new_tweets);
 			}
 
 			@Override
@@ -71,6 +71,21 @@ public class TimelineActivity extends Activity {
 				Log.d("DEBUG", e.toString());
 				Log.d("DEBUG", s.toString());
 			}
-		}, max_id);
+		}, start_id, max_id);
+	}
+
+	// Given an array of tweets, set the oldest and newest tweet IDs.
+	private void setMinAndMaxIDs(ArrayList<Tweet> tweets) {
+		if (tweets != null && !tweets.isEmpty()) {
+			for (int i = 0; i < tweets.size(); ++i) {
+				long tweet_id = tweets.get(i).getId();
+				if (tweet_id < oldest_id) {
+					oldest_id = tweet_id;
+				}
+				if (tweet_id > newest_id) {
+					newest_id = tweet_id;
+				}
+			}
+		}
 	}
 }
