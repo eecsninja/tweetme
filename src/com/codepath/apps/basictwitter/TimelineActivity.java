@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class TimelineActivity extends Activity {
 	private TwitterClient client;
@@ -114,13 +113,5 @@ public class TimelineActivity extends Activity {
 		if (requestCode != COMPOSE_INTENT) {
 			return;
 		}
-		String toast_message = "";
-		if (resultCode == RESULT_OK) {
-			toast_message = "Successfully tweeted!";
-		} else {
-			toast_message = "Did not tweet!";
-		}
-		// Display the toast.
-		Toast.makeText(this, toast_message, Toast.LENGTH_SHORT).show();
 	}
 }

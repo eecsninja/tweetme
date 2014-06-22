@@ -4,6 +4,7 @@ import org.scribe.builder.api.Api;
 import org.scribe.builder.api.TwitterApi;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -42,6 +43,20 @@ public class TwitterClient extends OAuthBaseClient {
 			params.put("max_id", max_id);
 		// Must match the GET/POST designation of the API.
 		client.get(api_url, params, handler);
+	}
+
+	public void doTweet(AsyncHttpResponseHandler handler, String status) {
+		// Make sure the status string is valid.
+		if (status == null) {
+			return;
+		}
+		// Start an update API call.
+		String api_url = getApiUrl("statuses/update.json");
+		RequestParams params = new RequestParams();
+		params.put("status", status);
+		// Call the POST API.
+		Log.d("DEBUG", "Posting to " + api_url);
+		client.post(api_url, params, handler);
 	}
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
