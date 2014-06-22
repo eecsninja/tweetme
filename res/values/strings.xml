@@ -10,5 +10,6 @@
     <string name="foo_label">\@foo</string>
     <string name="tweet_body">This is the tweet body</string>
     <string name="time_ago_label">Time</string>
+    <string name="action_compose">Compose</string>
 
 </resources>

@@ -10,7 +10,10 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class TimelineActivity extends Activity {
 	private TwitterClient client;
@@ -46,6 +49,13 @@ public class TimelineActivity extends Activity {
 		});
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Set up menu.
+		getMenuInflater().inflate(R.menu.compose, menu);
+		return true;
+	}
+
 	public void populateTimeline() {
 		// Determine a start ID for getting tweets. If there are no existing
 		// tweets loaded, then load as many as possible. Otherwise, look for
@@ -72,6 +82,12 @@ public class TimelineActivity extends Activity {
 				Log.d("DEBUG", s.toString());
 			}
 		}, start_id, max_id);
+	}
+
+	// Launch a new activity to compose a new tweet.
+	public void doCompose(MenuItem item) {
+		// TODO: Actually launch activity.
+		Toast.makeText(this, "Compose", Toast.LENGTH_SHORT).show();
 	}
 
 	// Given an array of tweets, set the oldest and newest tweet IDs.
