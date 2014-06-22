@@ -3,11 +3,14 @@ TweetMe: A custom Twitter client app
 
 CodePath Android Bootcamp Project #3
 
-Time taken: 6 hours
+Time taken: 8 hours
 
 Required stories:
 - User can sign in to Twitter using OAuth login
 - User should be able to see the username, name, body and timestamp for each tweet
 - User should be displayed the relative timestamp for a tweet "8m", "7h"
 - User can view more tweets as they scroll with infinite pagination
+- User can click a “Compose” icon in the Action Bar on the top right
+- User can then enter a new tweet and post this to twitter
+- User is taken back to home timeline with new tweet visible in timeline
 
