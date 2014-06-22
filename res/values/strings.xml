@@ -11,5 +11,9 @@
     <string name="tweet_body">This is the tweet body</string>
     <string name="time_ago_label">Time</string>
     <string name="action_compose">Compose</string>
+    <string name="title_activity_compose">ComposeActivity</string>
+    <string name="compose_label">Enter your tweet:</string>
+    <string name="tweet_button">Tweet it!</string>
+    <string name="tweet_hint">Say something...</string>
 
 </resources>

@@ -8,6 +8,7 @@ import com.codepath.apps.basictwitter.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -24,6 +25,9 @@ public class TimelineActivity extends Activity {
 	// Store the oldest and newest tweet IDs.
 	long oldest_id = Long.MAX_VALUE;
 	long newest_id = 1;
+
+	// ComposeActivity request code.
+	static final int COMPOSE_INTENT = 888;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +90,8 @@ public class TimelineActivity extends Activity {
 
 	// Launch a new activity to compose a new tweet.
 	public void doCompose(MenuItem item) {
-		// TODO: Actually launch activity.
-		Toast.makeText(this, "Compose", Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(this, ComposeActivity.class);
+		startActivityForResult(intent, COMPOSE_INTENT);
 	}
 
 	// Given an array of tweets, set the oldest and newest tweet IDs.
@@ -103,5 +107,20 @@ public class TimelineActivity extends Activity {
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode != COMPOSE_INTENT) {
+			return;
+		}
+		String toast_message = "";
+		if (resultCode == RESULT_OK) {
+			toast_message = "Successfully tweeted!";
+		} else {
+			toast_message = "Did not tweet!";
+		}
+		// Display the toast.
+		Toast.makeText(this, toast_message, Toast.LENGTH_SHORT).show();
 	}
 }
