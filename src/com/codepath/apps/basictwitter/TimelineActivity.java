@@ -10,7 +10,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class TimelineActivity extends Activity {
