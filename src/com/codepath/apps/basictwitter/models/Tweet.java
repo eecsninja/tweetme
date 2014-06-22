@@ -1,5 +1,9 @@
 package com.codepath.apps.basictwitter.models;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,6 +26,25 @@ public class Tweet {
 			return null;
 		}
 		return tweet;
+	}
+
+	public static ArrayList<Tweet> fromJSONArray(JSONArray array) {
+		ArrayList<Tweet> tweet_array = new ArrayList<Tweet>(array.length());
+		for (int i = 0; i < array.length(); ++i) {
+			JSONObject tweet_object = null;
+			try {
+				tweet_object = array.getJSONObject(i);
+			} catch (Exception e) {
+				e.printStackTrace();
+				continue;
+			}
+
+			Tweet tweet = Tweet.fromJSON(tweet_object);
+			if (tweet != null) {
+				tweet_array.add(tweet);
+			}
+		}
+		return tweet_array;
 	}
 
 	public String getBody() {
