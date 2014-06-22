@@ -16,7 +16,7 @@ import android.widget.ListView;
 public class TimelineActivity extends Activity {
 	private TwitterClient client;
 	private ArrayList<Tweet> tweets;
-	private ArrayAdapter<Tweet> tweets_adapter;
+	private TweetArrayAdapter tweets_adapter;
 	private ListView tweets_view;
 
 	@Override
@@ -30,7 +30,7 @@ public class TimelineActivity extends Activity {
 		// Load and display tweets.
 		tweets_view = (ListView) findViewById(R.id.lvTweets);
 		tweets = new ArrayList<Tweet>();
-		tweets_adapter = new ArrayAdapter<Tweet>(this, android.R.layout.simple_list_item_1);
+		tweets_adapter = new TweetArrayAdapter(this, tweets);
 		tweets_view.setAdapter(tweets_adapter);
 	}
 
