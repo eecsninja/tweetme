@@ -3,6 +3,7 @@ package com.codepath.apps.basictwitter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import com.codepath.apps.basictwitter.R;
 import com.codepath.oauth.OAuthLoginActivity;
@@ -28,6 +29,7 @@ public class LoginActivity extends OAuthLoginActivity<TwitterClient> {
 	public void onLoginSuccess() {
 		// Intent i = new Intent(this, PhotosActivity.class);
 		// startActivity(i);
+		Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
 	}
 
 	// OAuth authentication flow failed, handle the error
