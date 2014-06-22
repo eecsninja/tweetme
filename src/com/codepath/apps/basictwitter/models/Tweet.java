@@ -1,7 +1,6 @@
 package com.codepath.apps.basictwitter.models;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
