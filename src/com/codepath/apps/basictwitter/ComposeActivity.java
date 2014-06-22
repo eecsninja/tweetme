@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class ComposeActivity extends Activity {
+	// Peter Thiel: We wanted flying cars, instead we got...
+	private static final int MAX_TWEET_LENGTH = 140;
+
 	private TwitterClient client;
 
 	// Views.
@@ -40,6 +43,10 @@ public class ComposeActivity extends Activity {
 		// No sense in tweeting an empty string.
 		if (text.isEmpty()) {
 			Toast.makeText(this, "Write something.", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if (text.length() > MAX_TWEET_LENGTH) {
+			Toast.makeText(this, "Tweet is too long!", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		client.doTweet(new JsonHttpResponseHandler() {
