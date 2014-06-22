@@ -1,9 +1,15 @@
 package com.codepath.apps.basictwitter.models;
 
+import java.io.Serializable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class User {
+public class User implements Serializable {
+	// Serialization ID.
+	// TODO: Try Parcelable instead.
+	private static final long serialVersionUID = -7455940383615647225L;
+
 	private String name;
 	private long id;
 	private String screen_name;

@@ -1,12 +1,17 @@
 package com.codepath.apps.basictwitter.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Tweet {
+public class Tweet implements Serializable {
+	// Serialization ID.
+	// TODO: Try Parcelable instead.
+	private static final long serialVersionUID = -4561762185420913284L;
+
 	private String body;		// Content of tweet.
 	private long id;			// Unique ID of tweet.
 	private String timestamp;	// Time this tweet was created.
