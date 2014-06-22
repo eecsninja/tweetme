@@ -29,6 +29,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tvEnterTweetLabel"
         android:ems="10"
-        android:hint="@string/tweet_hint" />
+        android:hint="@string/tweet_hint"
+        android:maxLength="140" />
 
 </RelativeLayout>

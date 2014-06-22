@@ -8,10 +8,13 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ComposeActivity extends Activity {
@@ -21,6 +24,7 @@ public class ComposeActivity extends Activity {
 	private TwitterClient client;
 
 	// Views.
+	TextView label_text;
 	Button tweet_button;
 	EditText text_field;
 
@@ -33,8 +37,36 @@ public class ComposeActivity extends Activity {
 		client = TwitterApp.getRestClient();
 
 		// Load views.
+		label_text = (TextView) findViewById(R.id.tvEnterTweetLabel);
 		tweet_button = (Button) findViewById(R.id.btTweet);
 		text_field = (EditText) findViewById(R.id.etTweet);
+
+		setNumCharsRemaining();
+
+		// Attach text listener.
+		text_field.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				setNumCharsRemaining();
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
+	}
+
+	private void setNumCharsRemaining() {
+		// Show the number of characters remaining.
+		int num_chars_remaining =
+				MAX_TWEET_LENGTH - text_field.getText().length();
+		label_text.setText("Enter your tweet (" + num_chars_remaining + "):");
 	}
 
 	// Submit the tweet!
