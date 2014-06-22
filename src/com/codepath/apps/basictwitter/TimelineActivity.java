@@ -27,6 +27,7 @@ public class TimelineActivity extends Activity {
 
 	// ComposeActivity request code.
 	static final int COMPOSE_INTENT = 888;
+	public static final String INTENT_RESPONSE_TWEET = "response";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +111,19 @@ public class TimelineActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode != COMPOSE_INTENT) {
-			return;
+		if (requestCode == COMPOSE_INTENT && resultCode == RESULT_OK) {
+			// Get the newly posted tweet and add it to the timeline.
+			Log.d("DEBUG", "Got activity result");
+			Tweet tweet =
+					(Tweet) data.getExtras().getSerializable(INTENT_RESPONSE_TWEET);
+			Log.d("DEBUG", "Got tweet back");
+			if (tweet.getId() > newest_id) {
+				newest_id = tweet.getId();
+			}
+			// TODO: This does not take into account the possibility of other
+			// new tweets having been added to home timeline during the time it
+			// took to compose.
+			tweets_adapter.insert(tweet, 0);
 		}
 	}
 }

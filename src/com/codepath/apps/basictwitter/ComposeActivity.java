@@ -2,6 +2,7 @@ package com.codepath.apps.basictwitter;
 
 import org.json.JSONObject;
 
+import com.codepath.apps.basictwitter.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import android.app.Activity;
@@ -45,25 +46,34 @@ public class ComposeActivity extends Activity {
 			@Override
 			public void onSuccess(JSONObject object) {
 				Log.d("DEBUG", "Success!");
-				finishWithToast(RESULT_OK, "Successfully tweeted!");
+				finishWithResponse(RESULT_OK, object);
 			}
 
 			@Override
 			public void onFailure(Throwable e, String s) {
 				Log.d("DEBUG", e.toString());
 				Log.d("DEBUG", s.toString());
-				finishWithToast(RESULT_CANCELED, "Tweet post failed!");
+				finishWithResponse(RESULT_CANCELED, null);
 			}
 		}, text);
 	}
 
-	// Finishes the activity with a toast to provide status info.
-	private void finishWithToast(int result_code, String toast_text) {
+	// Finishes the activity and returns the JSON response if available.
+	private void finishWithResponse(int result_code, JSONObject response) {
+		// Generate a toast to provide status info.
+		String toast_text = "";
+		if (result_code == RESULT_OK) {
+			toast_text = "Successfully tweeted!";
+		} else {
+			toast_text = "Tweet post failed!";
+		}
 		Toast.makeText(this, toast_text, Toast.LENGTH_SHORT).show();
 		// Finish the activity.
 		Intent data = new Intent();
+		if (response != null) {
+			data.putExtra(TimelineActivity.INTENT_RESPONSE_TWEET, Tweet.fromJSON(response));
+		}
 		setResult(result_code, data);
-		Log.d("DEBUG", "Finish!");
 		finish();
 	}
 }
