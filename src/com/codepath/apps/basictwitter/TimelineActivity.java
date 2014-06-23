@@ -56,7 +56,7 @@ public class TimelineActivity extends Activity {
 		tweets_view.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				// TODO: Fill this in.
+				loadNewTweets();
 			}
 		});
 	}
@@ -94,6 +94,38 @@ public class TimelineActivity extends Activity {
 				Log.d("DEBUG", s.toString());
 			}
 		}, start_id, max_id);
+	}
+
+	public void loadNewTweets() {
+		// Reuse the existing function if no tweets have been loaded.
+		if (tweets.isEmpty()){
+			populateTimeline();
+		}
+		// Get the tweets that are newer than the newest tweet that we've
+		// already retrieved.
+		String start_id = Long.toString(newest_id);
+		// Define a custom handler.
+		// TODO: Merge this with the code in populateTimeline().
+		client.getHomeTimeline(new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONArray array) {
+				ArrayList<Tweet> new_tweets = Tweet.fromJSONArray(array);
+				// Determine newest and oldest tweet IDs.
+				setMinAndMaxIDs(new_tweets);
+				// Add new tweets to the beginning of the list.
+				for (int i = 0; i < new_tweets.size(); ++i) {
+					tweets_adapter.insert(new_tweets.get(i), i);
+				}
+				// Turn off the "refreshing" state of the pull down list view.
+				tweets_view.onRefreshComplete();
+			}
+
+			@Override
+			public void onFailure(Throwable e, String s) {
+				Log.d("DEBUG", e.toString());
+				Log.d("DEBUG", s.toString());
+			}
+		}, start_id, null);
 	}
 
 	// Launch a new activity to compose a new tweet.
