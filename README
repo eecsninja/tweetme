@@ -3,7 +3,7 @@ TweetMe: A custom Twitter client app
 
 CodePath Android Bootcamp Project #3
 
-Time taken: 8.5 hours
+Time taken: 9.5 hours
 
 Required stories:
 - User can sign in to Twitter using OAuth login
@@ -17,4 +17,5 @@ Required stories:
 Optional stories:
 - Links in tweets are clickable and will launch the web browser
 - User can see a counter with total number of characters left for tweet
+- User can refresh tweets timeline by pulling down to refresh
 
