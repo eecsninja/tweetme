@@ -7,19 +7,20 @@ import org.json.JSONArray;
 import com.codepath.apps.basictwitter.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import eu.erikw.PullToRefreshListView;
+import eu.erikw.PullToRefreshListView.OnRefreshListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 public class TimelineActivity extends Activity {
 	private TwitterClient client;
 	private ArrayList<Tweet> tweets;
 	private TweetArrayAdapter tweets_adapter;
-	private ListView tweets_view;
+	private PullToRefreshListView tweets_view;
 
 	// Store the oldest and newest tweet IDs.
 	long oldest_id = Long.MAX_VALUE;
@@ -35,7 +36,7 @@ public class TimelineActivity extends Activity {
 		setContentView(R.layout.activity_timeline);
 
 		// Set up to display tweets.
-		tweets_view = (ListView) findViewById(R.id.lvTweets);
+		tweets_view = (PullToRefreshListView) findViewById(R.id.lvTweets);
 		tweets = new ArrayList<Tweet>();
 		tweets_adapter = new TweetArrayAdapter(this, tweets);
 		tweets_view.setAdapter(tweets_adapter);
@@ -49,6 +50,13 @@ public class TimelineActivity extends Activity {
 			@Override
 			public void onLoadMore(int page, int totalItemsCount) {
 				populateTimeline();
+			}
+		});
+		// Add pull-down-to-refresh listener.
+		tweets_view.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				// TODO: Fill this in.
 			}
 		});
 	}
