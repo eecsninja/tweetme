@@ -18,6 +18,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 public class TimelineActivity extends Activity {
@@ -93,6 +96,15 @@ public class TimelineActivity extends Activity {
 			@Override
 			public void onRefresh() {
 				loadNewTweets();
+			}
+		});
+		// Add item click listener to launch detailed view.
+		tweets_view.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// Get the tweet that was clicked.
+				launchTweetView(tweets.get(position));
 			}
 		});
 	}
@@ -171,6 +183,13 @@ public class TimelineActivity extends Activity {
 			// took to compose.
 			tweets_adapter.insert(tweet, 0);
 		}
+	}
+
+	// Launches a TweetViewActivity to view a single tweet.
+	private void launchTweetView(Tweet tweet) {
+		Intent intent = new Intent(this, TweetViewActivity.class);
+		intent.putExtra(INTENT_TWEET_VIEW, tweet);
+		startActivity(intent);
 	}
 
 	// Checks for presence of Internet connection. Returns true if connection
