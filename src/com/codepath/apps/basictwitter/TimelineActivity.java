@@ -30,6 +30,38 @@ public class TimelineActivity extends Activity {
 	static final int COMPOSE_INTENT = 888;
 	public static final String INTENT_RESPONSE_TWEET = "response";
 
+	// Custom JSON response handler.
+	private class JSONHandler extends JsonHttpResponseHandler {
+		private boolean is_refreshing = false;
+
+		public JSONHandler(boolean do_refresh) {
+			super();
+			is_refreshing = do_refresh;
+		}
+		@Override
+		public void onSuccess(JSONArray array) {
+			ArrayList<Tweet> new_tweets = Tweet.fromJSONArray(array);
+			// Determine newest and oldest tweet IDs.
+			setMinAndMaxIDs(new_tweets);
+			if (is_refreshing) {
+				// Add new tweets to the beginning of the list.
+				for (int i = 0; i < new_tweets.size(); ++i) {
+					tweets_adapter.insert(new_tweets.get(i), i);
+				}
+				// Turn off the "refreshing" state of the pull down list view.
+				tweets_view.onRefreshComplete();
+			} else {
+				tweets_adapter.addAll(new_tweets);
+			}
+		}
+
+		@Override
+		public void onFailure(Throwable e, String s) {
+			Log.d("DEBUG", e.toString());
+			Log.d("DEBUG", s.toString());
+		}
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,55 +109,15 @@ public class TimelineActivity extends Activity {
 		if (!tweets.isEmpty()) {
 			max_id = Long.toString(oldest_id - 1);
 		}
-		// Define a custom handler.
-		client.getHomeTimeline(new JsonHttpResponseHandler() {
-			@Override
-			public void onSuccess(JSONArray array) {
-				ArrayList<Tweet> new_tweets = Tweet.fromJSONArray(array);
-				// Determine newest and oldest tweet IDs.
-				setMinAndMaxIDs(new_tweets);
-				// Add new tweets to views.
-				tweets_adapter.addAll(new_tweets);
-			}
-
-			@Override
-			public void onFailure(Throwable e, String s) {
-				Log.d("DEBUG", e.toString());
-				Log.d("DEBUG", s.toString());
-			}
-		}, start_id, max_id);
+		// Get the timeline from Twitter.
+		client.getHomeTimeline(new JSONHandler(false), start_id, max_id);
 	}
 
 	public void loadNewTweets() {
-		// Reuse the existing function if no tweets have been loaded.
-		if (tweets.isEmpty()){
-			populateTimeline();
-		}
 		// Get the tweets that are newer than the newest tweet that we've
 		// already retrieved.
 		String start_id = Long.toString(newest_id);
-		// Define a custom handler.
-		// TODO: Merge this with the code in populateTimeline().
-		client.getHomeTimeline(new JsonHttpResponseHandler() {
-			@Override
-			public void onSuccess(JSONArray array) {
-				ArrayList<Tweet> new_tweets = Tweet.fromJSONArray(array);
-				// Determine newest and oldest tweet IDs.
-				setMinAndMaxIDs(new_tweets);
-				// Add new tweets to the beginning of the list.
-				for (int i = 0; i < new_tweets.size(); ++i) {
-					tweets_adapter.insert(new_tweets.get(i), i);
-				}
-				// Turn off the "refreshing" state of the pull down list view.
-				tweets_view.onRefreshComplete();
-			}
-
-			@Override
-			public void onFailure(Throwable e, String s) {
-				Log.d("DEBUG", e.toString());
-				Log.d("DEBUG", s.toString());
-			}
-		}, start_id, null);
+		client.getHomeTimeline(new JSONHandler(true), start_id, null);
 	}
 
 	// Launch a new activity to compose a new tweet.
