@@ -36,6 +36,7 @@ public class TimelineActivity extends Activity {
 	// ComposeActivity request code.
 	static final int COMPOSE_INTENT = 888;
 	public static final String INTENT_RESPONSE_TWEET = "response";
+	public static final String INTENT_TWEET_VIEW = "tweet";
 
 	// Custom JSON response handler.
 	private class JSONHandler extends JsonHttpResponseHandler {
