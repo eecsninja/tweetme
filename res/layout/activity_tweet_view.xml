@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${packageName}.${activityClass}" >
+
+    <ImageView
+        android:id="@+id/ivDetailProfileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tvDetailName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ivDetailProfileImage"
+        android:layout_marginLeft="14dp"
+        android:layout_toRightOf="@+id/ivDetailProfileImage"
+        android:text="@string/user_name_label"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/tvDetailScreenName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvDetailName"
+        android:layout_below="@+id/tvDetailName"
+        android:text="@string/foo_label"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tvDetailTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tvDetailName"
+        android:layout_alignBottom="@+id/tvDetailName"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="14dp"
+        android:text="@string/time_ago_label"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tvDetailBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ivDetailProfileImage"
+        android:layout_below="@+id/tvDetailScreenName"
+        android:layout_marginTop="16dp"
+        android:text="@string/tweet_body"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>

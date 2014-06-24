@@ -15,5 +15,7 @@
     <string name="compose_label">Enter your tweet:</string>
     <string name="tweet_button">Tweet it!</string>
     <string name="tweet_hint">Say something...</string>
+    <string name="title_activity_tweet_view">TweetViewActivity</string>
+    <string name="user_name_label">user_name</string>
 
 </resources>
