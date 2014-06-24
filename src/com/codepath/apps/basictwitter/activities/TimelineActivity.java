@@ -10,6 +10,7 @@ import com.codepath.apps.basictwitter.TwitterClient;
 import com.codepath.apps.basictwitter.adapters.TweetArrayAdapter;
 import com.codepath.apps.basictwitter.helpers.EndlessScrollListener;
 import com.codepath.apps.basictwitter.models.Tweet;
+import com.codepath.apps.basictwitter.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import eu.erikw.PullToRefreshListView;
@@ -61,6 +62,7 @@ public class TimelineActivity extends Activity {
 			} else {
 				tweets_adapter.addAll(new_tweets);
 			}
+			saveTweetsToDB(new_tweets);
 		}
 
 		@Override
@@ -236,5 +238,15 @@ public class TimelineActivity extends Activity {
 			return null;
 		}
 		return Long.toString(id);
+	}
+
+	// Saves a list of tweets to SQL database.
+	private void saveTweetsToDB(ArrayList<Tweet> tweets) {
+		for (Tweet tweet : tweets) {
+			// Be sure to save both tweet and user data.
+			User user = tweet.getUser();
+			user.save();
+			tweet.save();
+		}
 	}
 }
