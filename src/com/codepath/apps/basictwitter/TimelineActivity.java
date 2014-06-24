@@ -10,11 +10,15 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import eu.erikw.PullToRefreshListView;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class TimelineActivity extends Activity {
 	private TwitterClient client;
@@ -101,6 +105,10 @@ public class TimelineActivity extends Activity {
 	}
 
 	public void populateTimeline() {
+		if (!hasInternetConnectivity()) {
+			warnOfLackOfInternetConnectivity();
+			return;
+		}
 		// Determine a start ID for getting tweets. If there are no existing
 		// tweets loaded, then load as many as possible. Otherwise, look for
 		// the lowest ID and start below that.
@@ -114,6 +122,12 @@ public class TimelineActivity extends Activity {
 	}
 
 	public void loadNewTweets() {
+		if (!hasInternetConnectivity()) {
+			// If not connected, then reset the refresh UI and bail out.
+			warnOfLackOfInternetConnectivity();
+			tweets_view.onRefreshComplete();
+			return;
+		}
 		// Get the tweets that are newer than the newest tweet that we've
 		// already retrieved.
 		String start_id = Long.toString(newest_id);
@@ -157,5 +171,25 @@ public class TimelineActivity extends Activity {
 			// took to compose.
 			tweets_adapter.insert(tweet, 0);
 		}
+	}
+
+	// Checks for presence of Internet connection. Returns true if connection
+	// is available, false if not.
+	private boolean hasInternetConnectivity() {
+		ConnectivityManager connectivity =
+				(ConnectivityManager) this.getSystemService(
+						Context.CONNECTIVITY_SERVICE);
+
+		NetworkInfo activeNetwork = connectivity.getActiveNetworkInfo();
+		boolean has_connection = (activeNetwork != null) &&
+								 activeNetwork.isConnectedOrConnecting();
+		return has_connection;
+	}
+
+	// Warns of lack of internet connection using a toast.
+	private void warnOfLackOfInternetConnectivity() {
+		Toast
+			.makeText(this, "No internet connection!", Toast.LENGTH_SHORT)
+			.show();
 	}
 }
