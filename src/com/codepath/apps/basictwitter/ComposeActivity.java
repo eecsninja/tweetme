@@ -23,6 +23,10 @@ public class ComposeActivity extends Activity {
 
 	private TwitterClient client;
 
+	// ComposeActivity request code and intent data keys.
+	static final int COMPOSE_INTENT = 888;
+	public static final String INTENT_RESPONSE_TWEET = "response";
+
 	// Views.
 	TextView label_text;
 	Button tweet_button;
@@ -110,7 +114,7 @@ public class ComposeActivity extends Activity {
 		// Finish the activity.
 		Intent data = new Intent();
 		if (response != null) {
-			data.putExtra(TimelineActivity.INTENT_RESPONSE_TWEET, Tweet.fromJSON(response));
+			data.putExtra(INTENT_RESPONSE_TWEET, Tweet.fromJSON(response));
 		}
 		setResult(result_code, data);
 		finish();

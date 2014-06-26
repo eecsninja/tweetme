@@ -25,14 +25,16 @@ public class TweetViewActivity extends Activity {
 	// The tweet to display.
 	Tweet tweet;
 
+	// Intent value key.
+	public static final String INTENT_TWEET_VIEW = "tweet";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tweet_view);
 
 		// Get the tweet from the intent that launched this activity.
-		tweet = (Tweet) getIntent().
-				getSerializableExtra(TimelineActivity.INTENT_TWEET_VIEW);
+		tweet = (Tweet) getIntent().getSerializableExtra(INTENT_TWEET_VIEW);
 
 		setupViews();
 	}

@@ -33,11 +33,6 @@ public class TimelineActivity extends Activity {
 	long oldest_id = Long.MAX_VALUE;
 	long newest_id = 1;
 
-	// ComposeActivity request code.
-	static final int COMPOSE_INTENT = 888;
-	public static final String INTENT_RESPONSE_TWEET = "response";
-	public static final String INTENT_TWEET_VIEW = "tweet";
-
 	// Custom JSON response handler.
 	private class JSONHandler extends JsonHttpResponseHandler {
 		private boolean is_refreshing = false;
@@ -150,7 +145,7 @@ public class TimelineActivity extends Activity {
 	// Launch a new activity to compose a new tweet.
 	public void doCompose(MenuItem item) {
 		Intent intent = new Intent(this, ComposeActivity.class);
-		startActivityForResult(intent, COMPOSE_INTENT);
+		startActivityForResult(intent, ComposeActivity.COMPOSE_INTENT);
 	}
 
 	// Given an array of tweets, set the oldest and newest tweet IDs.
@@ -170,11 +165,12 @@ public class TimelineActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == COMPOSE_INTENT && resultCode == RESULT_OK) {
+		if (requestCode == ComposeActivity.COMPOSE_INTENT && resultCode == RESULT_OK) {
 			// Get the newly posted tweet and add it to the timeline.
 			Log.d("DEBUG", "Got activity result");
 			Tweet tweet =
-					(Tweet) data.getExtras().getSerializable(INTENT_RESPONSE_TWEET);
+					(Tweet) data.getExtras()
+							.getSerializable(ComposeActivity.INTENT_RESPONSE_TWEET);
 			Log.d("DEBUG", "Got tweet back");
 			if (tweet.getId() > newest_id) {
 				newest_id = tweet.getId();
@@ -189,7 +185,7 @@ public class TimelineActivity extends Activity {
 	// Launches a TweetViewActivity to view a single tweet.
 	private void launchTweetView(Tweet tweet) {
 		Intent intent = new Intent(this, TweetViewActivity.class);
-		intent.putExtra(INTENT_TWEET_VIEW, tweet);
+		intent.putExtra(TweetViewActivity.INTENT_TWEET_VIEW, tweet);
 		startActivity(intent);
 	}
 
