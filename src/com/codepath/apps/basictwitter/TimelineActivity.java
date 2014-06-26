@@ -78,7 +78,6 @@ public class TimelineActivity extends Activity {
 
 		// Load some tweets.
 		client = TwitterApp.getRestClient();
-		populateTimeline();
 
 		// Add scroll listener.
 		tweets_view.setOnScrollListener(new EndlessScrollListener() {
