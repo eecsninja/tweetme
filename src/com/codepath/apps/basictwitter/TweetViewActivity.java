@@ -46,6 +46,9 @@ public class TweetViewActivity extends Activity {
 	public void doReply(View view) {
 		// When reply button is pressed, launch compose activity.
 		Intent intent = new Intent(this, ComposeActivity.class);
+		// Pass in the user name to indicate that this is a reply.
+		intent.putExtra(ComposeActivity.INITIAL_TEXT_KEY,
+						"@" + tweet.getUser().getScreenName() + " ");
 		startActivityForResult(intent, ComposeActivity.COMPOSE_INTENT);
 	}
 

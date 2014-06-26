@@ -25,6 +25,7 @@ public class ComposeActivity extends Activity {
 
 	// ComposeActivity request code and intent data keys.
 	static final int COMPOSE_INTENT = 888;
+	public static final String INITIAL_TEXT_KEY = "initial_value";
 	public static final String INTENT_RESPONSE_TWEET = "response";
 
 	// Views.
@@ -44,6 +45,13 @@ public class ComposeActivity extends Activity {
 		label_text = (TextView) findViewById(R.id.tvEnterTweetLabel);
 		tweet_button = (Button) findViewById(R.id.btTweet);
 		text_field = (EditText) findViewById(R.id.etTweet);
+
+		// Load initial text, if applicable.
+		Intent intent = getIntent();
+		if (intent.hasExtra(INITIAL_TEXT_KEY)) {
+			text_field.setText(intent.getStringExtra(INITIAL_TEXT_KEY));
+			text_field.setSelection(text_field.getText().length());
+		}
 
 		setNumCharsRemaining();
 
