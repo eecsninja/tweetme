@@ -20,3 +20,10 @@ Optional stories:
 - Advanced: User can refresh tweets timeline by pulling down to refresh
 - Advanced: User can tap a tweet to display a "detailed" view of that tweet
 - Advanced: User can select "reply" from detail view to respond to a tweet
+
+Demo recordings:
+- TweetMeDemoBasic.gif -- Login authentication, view home timeline, scroll down
+  (slightly defective: redundant loading).
+- TweetMeDemoComponseAndExtras.gif -- Compose new tweets, pull down to refresh,
+  open detailed view of tweet, tweet a reply.
+- TweetMeDemoEndlessScroll.gif -- Endless scroll with defect fixed.
