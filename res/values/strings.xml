@@ -17,5 +17,6 @@
     <string name="tweet_hint">Say something...</string>
     <string name="title_activity_tweet_view">TweetViewActivity</string>
     <string name="user_name_label">user_name</string>
+    <string name="reply_button_label">Reply</string>
 
 </resources>

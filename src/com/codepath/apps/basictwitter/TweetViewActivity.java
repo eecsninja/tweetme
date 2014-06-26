@@ -1,5 +1,6 @@
 package com.codepath.apps.basictwitter;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -9,8 +10,10 @@ import com.codepath.apps.basictwitter.models.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +28,8 @@ public class TweetViewActivity extends Activity {
 	// The tweet to display.
 	Tweet tweet;
 
-	// Intent value key.
+	// Intent request code and value key.
+	public static final int TWEET_VIEW_CODE = 999;
 	public static final String INTENT_TWEET_VIEW = "tweet";
 
 	@Override
@@ -37,6 +41,26 @@ public class TweetViewActivity extends Activity {
 		tweet = (Tweet) getIntent().getSerializableExtra(INTENT_TWEET_VIEW);
 
 		setupViews();
+	}
+
+	public void doReply(View view) {
+		// When reply button is pressed, launch compose activity.
+		Intent intent = new Intent(this, ComposeActivity.class);
+		startActivityForResult(intent, ComposeActivity.COMPOSE_INTENT);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ComposeActivity.COMPOSE_INTENT && resultCode == RESULT_OK) {
+			// Return the new tweet to the timeline.
+			Serializable tweet = data.getExtras()
+							.getSerializable(ComposeActivity.INTENT_RESPONSE_TWEET);
+
+			Intent response = new Intent();
+			response.putExtra(ComposeActivity.INTENT_RESPONSE_TWEET, tweet);
+			setResult(resultCode, response);
+			finish();
+		}
 	}
 
 	private void setupViews() {

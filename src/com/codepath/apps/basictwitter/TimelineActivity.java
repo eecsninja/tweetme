@@ -165,7 +165,16 @@ public class TimelineActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == ComposeActivity.COMPOSE_INTENT && resultCode == RESULT_OK) {
+		if (resultCode != RESULT_OK) {
+			return;
+		}
+		// A new tweet could be returned by either ComposeActivity or by
+		// TweetViewActivity (indirectly).
+		boolean do_get_tweet_result =
+				(requestCode == ComposeActivity.COMPOSE_INTENT) ||
+				(requestCode == TweetViewActivity.TWEET_VIEW_CODE &&
+				 data.getExtras().containsKey(ComposeActivity.INTENT_RESPONSE_TWEET));
+		if (do_get_tweet_result) {
 			// Get the newly posted tweet and add it to the timeline.
 			Log.d("DEBUG", "Got activity result");
 			Tweet tweet =
@@ -186,7 +195,7 @@ public class TimelineActivity extends Activity {
 	private void launchTweetView(Tweet tweet) {
 		Intent intent = new Intent(this, TweetViewActivity.class);
 		intent.putExtra(TweetViewActivity.INTENT_TWEET_VIEW, tweet);
-		startActivity(intent);
+		startActivityForResult(intent, TweetViewActivity.TWEET_VIEW_CODE);
 	}
 
 	// Checks for presence of Internet connection. Returns true if connection
