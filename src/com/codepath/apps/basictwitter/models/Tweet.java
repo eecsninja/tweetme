@@ -2,6 +2,7 @@ package com.codepath.apps.basictwitter.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,6 +10,8 @@ import org.json.JSONObject;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
+import com.activeandroid.query.From;
+import com.activeandroid.query.Select;
 
 public class Tweet extends Model implements Serializable {
 	// Serialization ID.
@@ -61,6 +64,21 @@ public class Tweet extends Model implements Serializable {
 			}
 		}
 		return tweet_array;
+	}
+
+	// Get all tweets from a user. Pass in user=null to get tweets from
+	// all users.
+	public static ArrayList<Tweet> getAll(User user) {
+		From from = new Select().from(Tweet.class);
+		if (user != null) {
+			from = from.where("user = ?", user.getId());
+		}
+		// Sort by ID, most recent first.
+		from = from.orderBy("remote_id DESC");
+		List<Tweet> results = from.execute();
+
+		// Convert to array list.
+		return new ArrayList<Tweet>(results);
 	}
 
 	@Override
