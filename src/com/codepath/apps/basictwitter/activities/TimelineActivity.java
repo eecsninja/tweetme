@@ -1,9 +1,14 @@
-package com.codepath.apps.basictwitter;
+package com.codepath.apps.basictwitter.activities;
 
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 
+import com.codepath.apps.basictwitter.R;
+import com.codepath.apps.basictwitter.TwitterApp;
+import com.codepath.apps.basictwitter.TwitterClient;
+import com.codepath.apps.basictwitter.adapters.TweetArrayAdapter;
+import com.codepath.apps.basictwitter.helpers.EndlessScrollListener;
 import com.codepath.apps.basictwitter.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 

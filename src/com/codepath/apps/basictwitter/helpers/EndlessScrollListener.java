@@ -1,4 +1,4 @@
-package com.codepath.apps.basictwitter;
+package com.codepath.apps.basictwitter.helpers;
 
 import android.util.Log;
 import android.widget.AbsListView;

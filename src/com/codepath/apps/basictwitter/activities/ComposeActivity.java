@@ -1,7 +1,10 @@
-package com.codepath.apps.basictwitter;
+package com.codepath.apps.basictwitter.activities;
 
 import org.json.JSONObject;
 
+import com.codepath.apps.basictwitter.R;
+import com.codepath.apps.basictwitter.TwitterApp;
+import com.codepath.apps.basictwitter.TwitterClient;
 import com.codepath.apps.basictwitter.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
