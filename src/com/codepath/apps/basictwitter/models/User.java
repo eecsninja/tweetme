@@ -15,7 +15,9 @@ public class User extends Model implements Serializable {
 	// TODO: Try Parcelable instead.
 	private static final long serialVersionUID = -7455940383615647225L;
 
-	@Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+	// Removing this for now due to an issue with Tweets containing this User
+	// being deleted from the DB when this is overwritten.
+	// @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
 	private long uid;
 	@Column(name = "name")
 	private String name;
