@@ -156,7 +156,7 @@ public class TimelineActivity extends Activity {
 	private void setMinAndMaxIDs(ArrayList<Tweet> tweets) {
 		if (tweets != null && !tweets.isEmpty()) {
 			for (int i = 0; i < tweets.size(); ++i) {
-				long tweet_id = tweets.get(i).getId();
+				long tweet_id = tweets.get(i).getUniqueId();
 				if (tweet_id < oldest_id) {
 					oldest_id = tweet_id;
 				}
