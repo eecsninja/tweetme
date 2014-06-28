@@ -235,9 +235,16 @@ public class TimelineActivity extends Activity {
 			.show();
 	}
 
-	// Loads tweets within an ID range. If there are tweets cached in the
-	// database, load those. Otherwise, load from online.
+	// Loads tweets within an ID range.
 	private void loadTweets(boolean refresh, long start_id, long max_id) {
+		// If there are tweets cached in the database, load those.
+		ArrayList<Tweet> db_tweets =
+				Tweet.getTweetsFromDB(null, start_id, max_id);
+		if (!db_tweets.isEmpty()) {
+			addTweets(db_tweets);
+			return;
+		}
+		// Otherwise, load from Twitter API.
 		client.getHomeTimeline(
 				new JSONHandler(refresh),
 				getTweetIDString(start_id),

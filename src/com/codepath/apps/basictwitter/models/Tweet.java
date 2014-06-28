@@ -18,6 +18,11 @@ public class Tweet extends Model implements Serializable {
 	// TODO: Try Parcelable instead.
 	private static final long serialVersionUID = -4561762185420913284L;
 
+	// Limit the number of tweets to return from database. This is the default
+	// number for the "count" field of the Twitter API's home_timeline call.
+	// TODO: Allow varying numbers of tweets..
+	private static int NUM_TWEETS_PER_QUERY = 20;
+
 	@Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
 	private long uid;			// Unique ID of tweet.
 	@Column(name = "body")
@@ -68,14 +73,24 @@ public class Tweet extends Model implements Serializable {
 
 	// Get all tweets from a user. Pass in user=null to get tweets from
 	// all users.
-	public static ArrayList<Tweet> getAll(User user) {
-		From from = new Select().from(Tweet.class);
+	public static ArrayList<Tweet> getTweetsFromDB(
+			User user, long min_uid, long max_uid) {
+		From query = new Select().from(Tweet.class);
 		if (user != null) {
-			from = from.where("user = ?", user.getId());
+			query = query.where("user = ?", user.getId());
 		}
 		// Sort by ID, most recent first.
-		from = from.orderBy("remote_id DESC");
-		List<Tweet> results = from.execute();
+		query = query.orderBy("remote_id DESC");
+		// Limit the number of queries.
+		query = query.limit(NUM_TWEETS_PER_QUERY);
+		// Set upper and lower bounds.
+		if (min_uid != 0) {
+			query = query.where("remote_id >= ?", (min_uid));
+		}
+		if (max_uid != 0) {
+			query = query.where("remote_id <= ?", Long.toString(max_uid));
+		}
+		List<Tweet> results = query.execute();
 
 		// Convert to array list.
 		return new ArrayList<Tweet>(results);
