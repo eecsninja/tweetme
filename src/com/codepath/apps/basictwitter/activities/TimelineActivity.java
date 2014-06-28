@@ -124,13 +124,12 @@ public class TimelineActivity extends Activity {
 		// Determine a start ID for getting tweets. If there are no existing
 		// tweets loaded, then load as many as possible. Otherwise, look for
 		// the lowest ID and start below that.
-		String start_id = "1";	// TODO: Use this for loading newer tweets.
-		String max_id = null;
+		long max_id = -1;
 		if (!tweets.isEmpty()) {
-			max_id = Long.toString(oldest_id - 1);
+			max_id = oldest_id - 1;
 		}
 		// Get the timeline from Twitter.
-		client.getHomeTimeline(new JSONHandler(false), start_id, max_id);
+		loadTweets(false, 1, max_id);
 	}
 
 	public void loadNewTweets() {
@@ -142,8 +141,7 @@ public class TimelineActivity extends Activity {
 		}
 		// Get the tweets that are newer than the newest tweet that we've
 		// already retrieved.
-		String start_id = Long.toString(newest_id);
-		client.getHomeTimeline(new JSONHandler(true), start_id, null);
+		loadTweets(true, newest_id, -1);
 	}
 
 	// Launch a new activity to compose a new tweet.
@@ -220,5 +218,23 @@ public class TimelineActivity extends Activity {
 		Toast
 			.makeText(this, "No internet connection!", Toast.LENGTH_SHORT)
 			.show();
+	}
+
+	// Loads tweets within an ID range. If there are tweets cached in the
+	// database, load those. Otherwise, load from online.
+	private void loadTweets(boolean refresh, long start_id, long max_id) {
+		client.getHomeTimeline(
+				new JSONHandler(refresh),
+				getTweetIDString(start_id),
+				getTweetIDString(max_id));
+	}
+
+	// Helper function that converts a tweet ID number to a string. If the
+	// ID is -1, treat it as undefined and return a null string.
+	private static String getTweetIDString(long id) {
+		if (id == -1) {
+			return null;
+		}
+		return Long.toString(id);
 	}
 }
