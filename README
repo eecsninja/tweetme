@@ -20,10 +20,12 @@ Optional stories:
 - Advanced: User can refresh tweets timeline by pulling down to refresh
 - Advanced: User can tap a tweet to display a "detailed" view of that tweet
 - Advanced: User can select "reply" from detail view to respond to a tweet
+- Advanced: User can open the twitter app offline and see last loaded tweets
 
 Demo recordings:
 - TweetMeDemoBasic.gif -- Login authentication, view home timeline, scroll down
   (slightly defective: redundant loading).
+- TweetMeDemoCachedTweets -- Load cached tweets from database while offline.
 - TweetMeDemoComponseAndExtras.gif -- Compose new tweets, pull down to refresh,
   open detailed view of tweet, tweet a reply.
 - TweetMeDemoEndlessScroll.gif -- Endless scroll with defect fixed.
