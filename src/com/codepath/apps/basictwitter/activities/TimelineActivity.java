@@ -132,10 +132,6 @@ public class TimelineActivity extends Activity {
 	}
 
 	public void populateTimeline() {
-		if (!hasInternetConnectivity()) {
-			warnOfLackOfInternetConnectivity();
-			return;
-		}
 		// Determine a start ID for getting tweets. If there are no existing
 		// tweets loaded, then load as many as possible. Otherwise, look for
 		// the lowest ID and start below that.
@@ -148,15 +144,14 @@ public class TimelineActivity extends Activity {
 	}
 
 	public void loadNewTweets() {
-		if (!hasInternetConnectivity()) {
-			// If not connected, then reset the refresh UI and bail out.
-			warnOfLackOfInternetConnectivity();
-			tweets_view.onRefreshComplete();
-			return;
-		}
 		// Get the tweets that are newer than the newest tweet that we've
 		// already retrieved.
 		loadTweets(true, newest_id, 0);
+
+		// If not connected, then reset the refresh UI and bail out.
+		if (!hasInternetConnectivity()) {
+			tweets_view.onRefreshComplete();
+		}
 	}
 
 	// Launch a new activity to compose a new tweet.
@@ -237,6 +232,11 @@ public class TimelineActivity extends Activity {
 
 	// Loads tweets within an ID range.
 	private void loadTweets(boolean refresh, long start_id, long max_id) {
+		boolean has_internet = hasInternetConnectivity();
+		// Warn user about lack of internet, if applicable.
+		if (!has_internet) {
+			warnOfLackOfInternetConnectivity();
+		}
 		// If there are tweets cached in the database, load those.
 		ArrayList<Tweet> db_tweets =
 				Tweet.getTweetsFromDB(null, start_id, max_id);
@@ -244,11 +244,13 @@ public class TimelineActivity extends Activity {
 			addTweets(db_tweets);
 			return;
 		}
-		// Otherwise, load from Twitter API.
-		client.getHomeTimeline(
-				new JSONHandler(refresh),
-				getTweetIDString(start_id),
-				getTweetIDString(max_id));
+		if (has_internet) {
+			// Otherwise, load from Twitter API if connected.
+			client.getHomeTimeline(
+					new JSONHandler(refresh),
+					getTweetIDString(start_id),
+					getTweetIDString(max_id));
+		}
 	}
 
 	// Helper function that converts a tweet ID number to a string. If the
