@@ -126,7 +126,7 @@ public class TimelineActivity extends Activity {
 		// Determine a start ID for getting tweets. If there are no existing
 		// tweets loaded, then load as many as possible. Otherwise, look for
 		// the lowest ID and start below that.
-		long max_id = -1;
+		long max_id = 0;
 		if (!tweets.isEmpty()) {
 			max_id = oldest_id - 1;
 		}
@@ -143,7 +143,7 @@ public class TimelineActivity extends Activity {
 		}
 		// Get the tweets that are newer than the newest tweet that we've
 		// already retrieved.
-		loadTweets(true, newest_id, -1);
+		loadTweets(true, newest_id, 0);
 	}
 
 	// Launch a new activity to compose a new tweet.
@@ -232,9 +232,9 @@ public class TimelineActivity extends Activity {
 	}
 
 	// Helper function that converts a tweet ID number to a string. If the
-	// ID is -1, treat it as undefined and return a null string.
+	// ID is 0, treat it as undefined and return a null string.
 	private static String getTweetIDString(long id) {
-		if (id == -1) {
+		if (id == 0) {
 			return null;
 		}
 		return Long.toString(id);
