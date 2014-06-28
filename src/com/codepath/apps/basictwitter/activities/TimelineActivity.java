@@ -50,18 +50,12 @@ public class TimelineActivity extends Activity {
 		@Override
 		public void onSuccess(JSONArray array) {
 			ArrayList<Tweet> new_tweets = Tweet.fromJSONArray(array);
-			// Determine newest and oldest tweet IDs.
-			setMinAndMaxIDs(new_tweets);
+			// Add these to the TimelineActivity's collection of tweets.
+			addTweets(new_tweets);
 			if (is_refreshing) {
-				// Add new tweets to the beginning of the list.
-				for (int i = 0; i < new_tweets.size(); ++i) {
-					tweets_adapter.insert(new_tweets.get(i), i);
-				}
-				// Turn off the "refreshing" state of the pull down list view.
 				tweets_view.onRefreshComplete();
-			} else {
-				tweets_adapter.addAll(new_tweets);
 			}
+			// Store newly retrieved tweets in database.
 			saveTweetsToDB(new_tweets);
 		}
 
@@ -109,6 +103,25 @@ public class TimelineActivity extends Activity {
 				launchTweetView(tweets.get(position));
 			}
 		});
+	}
+
+	public void addTweets(ArrayList<Tweet> tweets) {
+		// Determine newest and oldest tweet IDs.
+		setMinAndMaxIDs(tweets);
+		// This assumes all the new tweets are newer than or older than
+		// the existing tweets.
+		// TODO: Add stricter checking.
+		long min_new_tweet_id = tweets.get(tweets.size() - 1).getUniqueId();
+		if (!this.tweets.isEmpty() &&
+			min_new_tweet_id > this.tweets.get(0).getUniqueId()) {
+			// If the new tweets are more recent than the existing tweets,
+			// add new tweets to the beginning of the list.
+			for (int i = 0; i < tweets.size(); ++i) {
+				tweets_adapter.insert(tweets.get(i), i);
+			}
+		} else {
+			tweets_adapter.addAll(tweets);
+		}
 	}
 
 	@Override
