@@ -225,6 +225,8 @@ public class TimelineActivity extends Activity {
 	// Loads tweets within an ID range. If there are tweets cached in the
 	// database, load those. Otherwise, load from online.
 	private void loadTweets(boolean refresh, long start_id, long max_id) {
+		ArrayList<Tweet> db_tweets = Tweet.getTweetsFromDB(null, start_id, max_id);
+		Log.d("DEBUG", "Loaded from db: " + db_tweets.size());
 		client.getHomeTimeline(
 				new JSONHandler(refresh),
 				getTweetIDString(start_id),
@@ -247,6 +249,9 @@ public class TimelineActivity extends Activity {
 			User user = tweet.getUser();
 			user.save();
 			tweet.save();
+			Log.d("DEBUG", "Saving tweet with id=" + tweet.getUniqueId());
 		}
+		ArrayList<Tweet> db_tweets = Tweet.getTweetsFromDB(null, 1, 0);
+		Log.d("DEBUG", "Loaded from db: " + db_tweets.size());
 	}
 }

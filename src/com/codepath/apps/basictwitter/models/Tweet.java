@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.query.From;
@@ -17,6 +19,9 @@ public class Tweet extends Model implements Serializable {
 	// Serialization ID.
 	// TODO: Try Parcelable instead.
 	private static final long serialVersionUID = -4561762185420913284L;
+
+	// Limit the number of tweets to return from database.
+	private static int MAX_TWEETS_PER_QUERY = 25;
 
 	@Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
 	private long uid;			// Unique ID of tweet.
@@ -68,14 +73,27 @@ public class Tweet extends Model implements Serializable {
 
 	// Get all tweets from a user. Pass in user=null to get tweets from
 	// all users.
-	public static ArrayList<Tweet> getAll(User user) {
-		From from = new Select().from(Tweet.class);
+	public static ArrayList<Tweet> getTweetsFromDB(
+			User user, long min_uid, long max_uid) {
+		From query = new Select().from(Tweet.class);
 		if (user != null) {
-			from = from.where("user = ?", user.getId());
+			//query = query.where("user = ?", user.getId());
 		}
 		// Sort by ID, most recent first.
-		from = from.orderBy("remote_id DESC");
-		List<Tweet> results = from.execute();
+		//query = query.orderBy("remote_id DESC");
+		if (min_uid != 0) {
+			//query = query.where("remote_id >= ?", (min_uid));
+		}
+		if (max_uid != 0) {
+			//query = query.where("remote_id <= ?", Long.toString(max_uid));
+		}
+		String[] args = query.getArguments();
+		String query_string = "";
+		Log.d("DEBUG", "query has " + args.length + " args");
+		for (int i = 0; i < args.length; ++i)
+			query_string += args[i] + " ";
+		Log.d("DEBUG", "Querying: " + query_string);
+		List<Tweet> results = query.execute();
 
 		// Convert to array list.
 		return new ArrayList<Tweet>(results);
