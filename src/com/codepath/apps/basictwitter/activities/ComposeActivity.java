@@ -27,7 +27,7 @@ public class ComposeActivity extends Activity {
 	private TwitterClient client;
 
 	// ComposeActivity request code and intent data keys.
-	static final int COMPOSE_INTENT = 888;
+	public static final int COMPOSE_INTENT = 888;
 	public static final String INITIAL_TEXT_KEY = "initial_value";
 	public static final String INTENT_RESPONSE_TWEET = "response";
 
