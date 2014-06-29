@@ -89,6 +89,9 @@ public class TweetsListFragment extends Fragment {
 
 	// Add new tweets to the tweet list view.
 	public void addTweets(ArrayList<Tweet> tweets) {
+		if (tweets.isEmpty()) {
+			return;
+		}
 		// Determine newest and oldest tweet IDs.
 		setMinAndMaxIDs(tweets);
 		// This assumes all the new tweets are newer than or older than
