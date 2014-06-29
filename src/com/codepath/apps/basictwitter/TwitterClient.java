@@ -35,14 +35,14 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void getHomeTimeline(AsyncHttpResponseHandler handler,
 								String start_id, String max_id) {
-		String api_url = getApiUrl("statuses/home_timeline.json");
-		RequestParams params = new RequestParams();
-		if (start_id != null)
-			params.put("since_id", start_id);
-		if (max_id != null)
-			params.put("max_id", max_id);
-		// Must match the GET/POST designation of the API.
-		client.get(api_url, params, handler);
+		getTimeline(getApiUrl("statuses/home_timeline.json"),
+				handler, start_id, max_id);
+	}
+
+	public void getMentionsTimeline(AsyncHttpResponseHandler handler,
+									String start_id, String max_id) {
+		getTimeline(getApiUrl("statuses/mentions_timeline.json"),
+					handler, start_id, max_id);
 	}
 
 	public void doTweet(AsyncHttpResponseHandler handler, String status) {
@@ -57,6 +57,19 @@ public class TwitterClient extends OAuthBaseClient {
 		// Call the POST API.
 		Log.d("DEBUG", "Posting to " + api_url);
 		client.post(api_url, params, handler);
+	}
+
+	// Get a timeline from a timeline JSON API.
+	// Pass in start and max ID values, or null for either.
+	private void getTimeline(String api_url, AsyncHttpResponseHandler handler,
+							 String start_id, String max_id) {
+		RequestParams params = new RequestParams();
+		if (start_id != null)
+			params.put("since_id", start_id);
+		if (max_id != null)
+			params.put("max_id", max_id);
+		// Must match the GET/POST designation of the API.
+		client.get(api_url, params, handler);
 	}
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint

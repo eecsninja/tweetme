@@ -18,7 +18,7 @@ import com.codepath.apps.basictwitter.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class HomeTimelineFragment extends TweetsListFragment {
-	private TwitterClient client;
+	protected TwitterClient client;
 
 	// Custom JSON response handler.
 	protected class JSONHandler extends JsonHttpResponseHandler {
@@ -52,7 +52,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
 		super.onCreate(savedInstanceState);
 		// Load REST client.
 		client = TwitterApp.getRestClient();
-	} 
+	}
 
 	// Launch a new activity to compose a new tweet.
 	public void doCompose(MenuItem item) {
