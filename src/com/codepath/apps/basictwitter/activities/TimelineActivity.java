@@ -8,6 +8,7 @@ import android.view.Menu;
 
 import com.codepath.apps.basictwitter.R;
 import com.codepath.apps.basictwitter.fragments.HomeTimelineFragment;
+import com.codepath.apps.basictwitter.fragments.MentionsTimelineFragment;
 import com.codepath.apps.basictwitter.helpers.FragmentTabListener;
 
 public class TimelineActivity extends FragmentActivity {
@@ -50,9 +51,9 @@ public class TimelineActivity extends FragmentActivity {
 				.setIcon(R.drawable.ic_action_mentions_timeline)
 				.setTag("MentionsTimelineFragment")
 				.setTabListener(
-						new FragmentTabListener<HomeTimelineFragment>(
+						new FragmentTabListener<MentionsTimelineFragment>(
 								R.id.flContainer, this, "second",
-								HomeTimelineFragment.class));
+								MentionsTimelineFragment.class));
 
 		actionBar.addTab(tab2);
 	}
