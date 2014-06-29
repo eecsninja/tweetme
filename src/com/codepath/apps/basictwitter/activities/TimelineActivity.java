@@ -1,16 +1,21 @@
 package com.codepath.apps.basictwitter.activities;
 
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 
 import com.codepath.apps.basictwitter.R;
+import com.codepath.apps.basictwitter.fragments.HomeTimelineFragment;
+import com.codepath.apps.basictwitter.helpers.FragmentTabListener;
 
 public class TimelineActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_timeline);
+		setupTabs();
 	}
 
 	@Override
@@ -19,5 +24,36 @@ public class TimelineActivity extends FragmentActivity {
 		// TODO: This currently causes an exception, figure out why.
 		// getMenuInflater().inflate(R.menu.compose, menu);
 		return true;
+	}
+
+	private void setupTabs() {
+		ActionBar actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setDisplayShowTitleEnabled(true);
+
+		Tab tab1 = actionBar
+				.newTab()
+				.setText("First")
+				.setIcon(R.drawable.ic_action_home_timeline)
+				.setTag("HomeTimelineFragment")
+				.setTabListener(
+						new FragmentTabListener<HomeTimelineFragment>(
+								R.id.flContainer, this, "first",
+								HomeTimelineFragment.class));
+
+		actionBar.addTab(tab1);
+		actionBar.selectTab(tab1);
+
+		Tab tab2 = actionBar
+				.newTab()
+				.setText("Second")
+				.setIcon(R.drawable.ic_action_mentions_timeline)
+				.setTag("MentionsTimelineFragment")
+				.setTabListener(
+						new FragmentTabListener<HomeTimelineFragment>(
+								R.id.flContainer, this, "second",
+								HomeTimelineFragment.class));
+
+		actionBar.addTab(tab2);
 	}
 }
