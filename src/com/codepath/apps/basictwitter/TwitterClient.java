@@ -33,6 +33,12 @@ public class TwitterClient extends OAuthBaseClient {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
 
+	// Get information about the user.
+	public void getProfileInfo(AsyncHttpResponseHandler handler) {
+		String api_url = getApiUrl("account/verify_credentials.json");
+		client.get(api_url, null, handler);
+	}
+
 	public void getHomeTimeline(AsyncHttpResponseHandler handler,
 								String start_id, String max_id) {
 		getTimeline(getApiUrl("statuses/home_timeline.json"),
