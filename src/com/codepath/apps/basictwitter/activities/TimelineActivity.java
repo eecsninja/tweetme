@@ -2,6 +2,7 @@ package com.codepath.apps.basictwitter.activities;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -33,7 +34,8 @@ public class TimelineActivity extends FragmentActivity {
 
 	// View the user's profile.
 	public void doProfileView(MenuItem item) {
-		// TODO: Launch profile view activity.
+		Intent intent = new Intent(this, ProfileActivity.class);
+		startActivity(intent);
 	}
 
 	private void setupTabs() {

@@ -19,5 +19,6 @@
     <string name="user_name_label">user_name</string>
     <string name="reply_button_label">Reply</string>
     <string name="action_profile">View Profile</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 
 </resources>

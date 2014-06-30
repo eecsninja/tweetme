@@ -56,6 +56,10 @@
             android:name="com.codepath.apps.basictwitter.activities.TweetViewActivity"
             android:label="@string/title_activity_tweet_view" >
         </activity>
+        <activity
+            android:name="com.codepath.apps.basictwitter.activities.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
     </application>
 
 </manifest>
