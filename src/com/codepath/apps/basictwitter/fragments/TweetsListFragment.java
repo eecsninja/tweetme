@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -51,6 +52,9 @@ public class TweetsListFragment extends Fragment {
 	long oldest_id = Long.MAX_VALUE;
 	long newest_id = 1;
 
+	// For listening to tweet clicks.
+	OnTweetClickedListener tweet_clicked_listener;
+
 	// Custom JSON response handler.
 	protected class JSONHandler extends JsonHttpResponseHandler {
 		private boolean is_refreshing = false;
@@ -77,6 +81,22 @@ public class TweetsListFragment extends Fragment {
 		public void onFailure(Throwable e, String s) {
 			Log.d("DEBUG", e.toString());
 			Log.d("DEBUG", s.toString());
+		}
+	}
+
+	// Listener interface for handling clicks on tweets.
+	public interface OnTweetClickedListener {
+		public void onTweetClicked(Tweet tweet);
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if (activity instanceof OnTweetClickedListener) {
+			tweet_clicked_listener = (OnTweetClickedListener) activity;
+		} else {
+			throw new ClassCastException(activity.toString()
+					+ " must implement TweetsListFragment.OnTweetClickedListener");
 		}
 	}
 
@@ -123,8 +143,8 @@ public class TweetsListFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// Get the tweet that was clicked.
-				launchTweetView(tweets.get(position));
+				// Get the tweet that was clicked and pass it to the listener.
+				tweet_clicked_listener.onTweetClicked(tweets.get(position));
 			}
 		});
 
@@ -231,13 +251,6 @@ public class TweetsListFragment extends Fragment {
 		if (!hasInternetConnectivity()) {
 			tweets_view.onRefreshComplete();
 		}
-	}
-
-	// Launches a TweetViewActivity to view a single tweet.
-	protected void launchTweetView(Tweet tweet) {
-		Intent intent = new Intent(getActivity(), TweetViewActivity.class);
-		intent.putExtra(TweetViewActivity.INTENT_TWEET_VIEW, tweet);
-		startActivityForResult(intent, TweetViewActivity.TWEET_VIEW_CODE);
 	}
 
 	// Loads tweets within an ID range.

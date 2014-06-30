@@ -19,7 +19,9 @@ import com.codepath.apps.basictwitter.helpers.FragmentTabListener;
 import com.codepath.apps.basictwitter.models.Tweet;
 import com.codepath.apps.basictwitter.models.User;
 
-public class TimelineActivity extends FragmentActivity {
+public class TimelineActivity
+		extends FragmentActivity
+		implements TweetsListFragment.OnTweetClickedListener {
 	// Handles to fragments.
 	TweetsListFragment home_timeline = null;
 	TweetsListFragment mentions_timeline = null;
@@ -76,6 +78,14 @@ public class TimelineActivity extends FragmentActivity {
 				mentions_timeline.addTweets(tweets);
 			}
 		}
+	}
+
+	@Override
+	public void onTweetClicked(Tweet tweet) {
+		// Launches a TweetViewActivity to view a single tweet.
+		Intent intent = new Intent(this, TweetViewActivity.class);
+		intent.putExtra(TweetViewActivity.INTENT_TWEET_VIEW, tweet);
+		startActivityForResult(intent, TweetViewActivity.TWEET_VIEW_CODE);
 	}
 
 	// View the user's profile.
