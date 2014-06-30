@@ -37,12 +37,15 @@ public class TwitterClient extends OAuthBaseClient {
 	public void getProfileInfo(
 			AsyncHttpResponseHandler handler, String screen_name) {
 		String api_url = "";
+		RequestParams params = null;
 		if (screen_name == null) {
 			api_url = getApiUrl("account/verify_credentials.json");
 		} else {
 			api_url = getApiUrl("users/show.json");
+			params = new RequestParams();
+			params.put("screen_name", screen_name);
 		}
-		client.get(api_url, null, handler);
+		client.get(api_url, params, handler);
 	}
 
 	public void getHomeTimeline(AsyncHttpResponseHandler handler,
