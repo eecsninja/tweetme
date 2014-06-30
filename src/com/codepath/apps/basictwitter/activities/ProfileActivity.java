@@ -4,12 +4,14 @@ import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.basictwitter.R;
 import com.codepath.apps.basictwitter.TwitterApp;
 import com.codepath.apps.basictwitter.fragments.TweetsListFragment;
+import com.codepath.apps.basictwitter.fragments.UserTimelineFragment;
 import com.codepath.apps.basictwitter.models.Tweet;
 import com.codepath.apps.basictwitter.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -43,6 +45,14 @@ public class ProfileActivity
 		loadProfileInfo(screen_name);
 
 		// TODO: Load a particular user's timeline.
+
+		// Create the user timeline fragment dynamically.
+		FragmentTransaction transaction =
+				getSupportFragmentManager().beginTransaction();
+		// Replace the container with a new fragment
+		transaction.replace(R.id.flTimelineFragment, new UserTimelineFragment());
+		// Execute the changes specified
+		transaction.commit();
 	}
 
 	private void loadProfileInfo(String screen_name) {

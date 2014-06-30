@@ -4,17 +4,15 @@
     android:layout_height="match_parent"
     tools:context="${packageName}.${activityClass}" >
 
-    <fragment
-        android:id="@+id/fragmentUserTimeline"
-        android:name="com.codepath.apps.basictwitter.fragments.UserTimelineFragment"
+    <FrameLayout
+        android:id="@+id/flTimelineFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/llFollowers"
-        android:layout_marginTop="14dp"
-        tools:layout="@layout/fragment_tweets_list" />
+        android:layout_marginTop="14dp" />
 
     <RelativeLayout
         android:id="@+id/rlProfile"
