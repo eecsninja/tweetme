@@ -14,6 +14,9 @@ import com.codepath.apps.basictwitter.fragments.MentionsTimelineFragment;
 import com.codepath.apps.basictwitter.helpers.FragmentTabListener;
 
 public class TimelineActivity extends FragmentActivity {
+	static final String HOME_TIMELINE_TAG = "home";
+	static final String MENTIONS_TIMELINE_TAG = "mentions";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,7 +53,7 @@ public class TimelineActivity extends FragmentActivity {
 				.setTag("HomeTimelineFragment")
 				.setTabListener(
 						new FragmentTabListener<HomeTimelineFragment>(
-								R.id.flContainer, this, "first",
+								R.id.flContainer, this, HOME_TIMELINE_TAG,
 								HomeTimelineFragment.class));
 
 		actionBar.addTab(tab1);
@@ -63,7 +66,7 @@ public class TimelineActivity extends FragmentActivity {
 				.setTag("MentionsTimelineFragment")
 				.setTabListener(
 						new FragmentTabListener<MentionsTimelineFragment>(
-								R.id.flContainer, this, "second",
+								R.id.flContainer, this, MENTIONS_TIMELINE_TAG,
 								MentionsTimelineFragment.class));
 
 		actionBar.addTab(tab2);
