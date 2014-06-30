@@ -100,12 +100,14 @@ public class TweetsListFragment extends Fragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		// Get handler for clicks on tweets.
 		if (activity instanceof OnTweetClickedListener) {
 			tweet_clicked_listener = (OnTweetClickedListener) activity;
 		} else {
 			throw new ClassCastException(activity.toString()
 					+ " must implement TweetsListFragment.OnTweetClickedListener");
 		}
+		// Get handler for clicks on profile icon.
 		if (activity instanceof OnProfileIconClickedListener) {
 			profile_icon_clicked_listener = (OnProfileIconClickedListener) activity;
 		} else {
