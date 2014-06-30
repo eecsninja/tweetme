@@ -51,19 +51,19 @@ public class TwitterClient extends OAuthBaseClient {
 	public void getHomeTimeline(AsyncHttpResponseHandler handler,
 								String start_id, String max_id) {
 		getTimeline(getApiUrl("statuses/home_timeline.json"),
-				handler, start_id, max_id);
+					handler, null, start_id, max_id);
 	}
 
 	public void getMentionsTimeline(AsyncHttpResponseHandler handler,
 									String start_id, String max_id) {
 		getTimeline(getApiUrl("statuses/mentions_timeline.json"),
-					handler, start_id, max_id);
+					handler, null, start_id, max_id);
 	}
 
 	public void getUserTimeline(AsyncHttpResponseHandler handler,
-								String start_id, String max_id) {
+								String screen_name, String start_id, String max_id) {
 		getTimeline(getApiUrl("statuses/user_timeline.json"),
-					handler, start_id, max_id);
+					handler, screen_name, start_id, max_id);
 	}
 
 	public void doTweet(AsyncHttpResponseHandler handler, String status) {
@@ -82,8 +82,10 @@ public class TwitterClient extends OAuthBaseClient {
 	// Get a timeline from a timeline JSON API.
 	// Pass in start and max ID values, or null for either.
 	private void getTimeline(String api_url, AsyncHttpResponseHandler handler,
-							 String start_id, String max_id) {
+							 String screen_name, String start_id, String max_id) {
 		RequestParams params = new RequestParams();
+		if (screen_name != null)
+			params.put("screen_name", screen_name);
 		if (start_id != null)
 			params.put("since_id", start_id);
 		if (max_id != null)

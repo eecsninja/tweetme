@@ -44,13 +44,13 @@ public class ProfileActivity
 		String screen_name = getIntent().getStringExtra(SCREEN_NAME_EXTRA);
 		loadProfileInfo(screen_name);
 
-		// TODO: Load a particular user's timeline.
-
 		// Create the user timeline fragment dynamically.
 		FragmentTransaction transaction =
 				getSupportFragmentManager().beginTransaction();
-		// Replace the container with a new fragment
-		transaction.replace(R.id.flTimelineFragment, new UserTimelineFragment());
+		// Replace the container with UserTimelineFragment.
+		UserTimelineFragment user_timeline = new UserTimelineFragment();
+		user_timeline.setScreenName(screen_name);
+		transaction.replace(R.id.flTimelineFragment, user_timeline);
 		// Execute the changes specified
 		transaction.commit();
 	}
