@@ -50,6 +50,9 @@ public class TweetViewActivity extends Activity {
 		// Pass in the user name to indicate that this is a reply.
 		intent.putExtra(ComposeActivity.INITIAL_TEXT_KEY,
 						"@" + tweet.getUser().getScreenName() + " ");
+		// Pass in the current tweet's ID to link the new tweet to it.
+		intent.putExtra(ComposeActivity.IN_REPLY_TO_TWEET_KEY,
+						Long.toString(tweet.getUniqueId()));
 		startActivityForResult(intent, ComposeActivity.COMPOSE_INTENT);
 	}
 

@@ -27,14 +27,22 @@ public class ComposeActivity extends Activity {
 	private TwitterClient client;
 
 	// ComposeActivity request code and intent data keys.
+	// Intent request code for this activity.
 	public static final int COMPOSE_INTENT = 888;
+	// The initial text in the tweet EditText field.
 	public static final String INITIAL_TEXT_KEY = "initial_value";
+	// The ID of the tweet to which the current activity is responding.
+	public static final String IN_REPLY_TO_TWEET_KEY = "in_reply_to_id";
+	// The new tweet that was created.
 	public static final String INTENT_RESPONSE_TWEET = "response";
 
 	// Views.
 	TextView label_text;
 	Button tweet_button;
 	EditText text_field;
+
+	// If this is a response to another tweet, then store that tweet's ID.
+	String in_reply_to_tweet_id = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +57,19 @@ public class ComposeActivity extends Activity {
 		tweet_button = (Button) findViewById(R.id.btTweet);
 		text_field = (EditText) findViewById(R.id.etTweet);
 
+		// TODO: Consider combining initial text and in-reply-to-id into a
+		// single Tweet object.
+
 		// Load initial text, if applicable.
 		Intent intent = getIntent();
 		if (intent.hasExtra(INITIAL_TEXT_KEY)) {
 			text_field.setText(intent.getStringExtra(INITIAL_TEXT_KEY));
 			text_field.setSelection(text_field.getText().length());
+		}
+		// Get tweet to which to respond, if applicable.
+		if (intent.hasExtra(IN_REPLY_TO_TWEET_KEY)) {
+			in_reply_to_tweet_id =
+					intent.getStringExtra(IN_REPLY_TO_TWEET_KEY);
 		}
 
 		setNumCharsRemaining();
@@ -109,7 +125,7 @@ public class ComposeActivity extends Activity {
 				Log.d("DEBUG", s.toString());
 				finishWithResponse(RESULT_CANCELED, null);
 			}
-		}, text);
+		}, text, in_reply_to_tweet_id);
 	}
 
 	// Finishes the activity and returns the JSON response if available.
