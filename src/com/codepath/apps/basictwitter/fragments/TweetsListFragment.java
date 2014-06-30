@@ -6,7 +6,6 @@ import org.json.JSONArray;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import android.widget.Toast;
 import com.codepath.apps.basictwitter.R;
 import com.codepath.apps.basictwitter.TwitterApp;
 import com.codepath.apps.basictwitter.TwitterClient;
-import com.codepath.apps.basictwitter.activities.TweetViewActivity;
 import com.codepath.apps.basictwitter.adapters.TweetArrayAdapter;
 import com.codepath.apps.basictwitter.helpers.EndlessScrollListener;
 import com.codepath.apps.basictwitter.models.Tweet;
