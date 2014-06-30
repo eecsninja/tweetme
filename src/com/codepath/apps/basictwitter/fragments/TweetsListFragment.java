@@ -231,11 +231,9 @@ public class TweetsListFragment extends Fragment {
 				 data.getExtras().containsKey(ComposeActivity.INTENT_RESPONSE_TWEET));
 		if (do_get_tweet_result) {
 			// Get the newly posted tweet and add it to the timeline.
-			Log.d("DEBUG", "Got activity result");
 			Tweet tweet =
 					(Tweet) data.getExtras()
 							.getSerializable(ComposeActivity.INTENT_RESPONSE_TWEET);
-			Log.d("DEBUG", "Got tweet back");
 			if (tweet.getId() > newest_id) {
 				newest_id = tweet.getId();
 			}
