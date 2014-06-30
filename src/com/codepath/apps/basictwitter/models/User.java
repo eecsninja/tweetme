@@ -26,6 +26,10 @@ public class User extends Model implements Serializable {
 	@Column(name = "image_url")
 	private String profile_image_url;
 
+	private int num_followers = 0;
+	private int num_following = 0;
+	private String tagline = "";
+
 	// The default constructor is required for ActiveAndroid's Model class.
 	public User() {
 		super();
@@ -38,6 +42,9 @@ public class User extends Model implements Serializable {
 			user.uid = object.getLong("id");
 			user.screen_name = object.getString("screen_name");
 			user.profile_image_url = object.getString("profile_image_url");
+			user.num_followers = object.getInt("followers_count");
+			user.num_following = object.getInt("friends_count");
+			user.tagline = object.getString("description");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;
@@ -59,5 +66,17 @@ public class User extends Model implements Serializable {
 
 	public String getProfileImageUrl() {
 		return profile_image_url;
+	}
+
+	public int getNumFollowers() {
+		return num_followers;
+	}
+
+	public int getNumFollowing() {
+		return num_following;
+	}
+
+	public String getTagline() {
+		return tagline;
 	}
 }
