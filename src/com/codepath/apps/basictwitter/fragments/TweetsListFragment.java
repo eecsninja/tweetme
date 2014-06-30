@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.codepath.apps.basictwitter.R;
@@ -54,6 +55,8 @@ public class TweetsListFragment extends Fragment {
 
 	// For listening to tweet clicks.
 	OnTweetClickedListener tweet_clicked_listener;
+	// For listening to profile icon clicks.
+	OnProfileIconClickedListener profile_icon_clicked_listener;
 
 	// Custom JSON response handler.
 	protected class JSONHandler extends JsonHttpResponseHandler {
@@ -89,6 +92,11 @@ public class TweetsListFragment extends Fragment {
 		public void onTweetClicked(Tweet tweet);
 	}
 
+	// Listener interface for handling clicks on profile icons.
+	public interface OnProfileIconClickedListener {
+		public void onProfileIconClicked(ImageView profile_icon);
+	}
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -97,6 +105,12 @@ public class TweetsListFragment extends Fragment {
 		} else {
 			throw new ClassCastException(activity.toString()
 					+ " must implement TweetsListFragment.OnTweetClickedListener");
+		}
+		if (activity instanceof OnProfileIconClickedListener) {
+			profile_icon_clicked_listener = (OnProfileIconClickedListener) activity;
+		} else {
+			throw new ClassCastException(activity.toString()
+					+ " must implement TweetsListFragment.OnProfileIconClickedListener");
 		}
 	}
 
@@ -110,7 +124,15 @@ public class TweetsListFragment extends Fragment {
 		// Non-view initialization.
 		// Create containers and adapters.
 		tweets = new ArrayList<Tweet>();
-		tweets_adapter = new TweetArrayAdapter(getActivity(), tweets);
+		tweets_adapter = new TweetArrayAdapter(
+				getActivity(), tweets,
+				new android.view.View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						ImageView profile_icon = (ImageView) view;
+						profile_icon_clicked_listener.onProfileIconClicked(profile_icon);
+					}
+				});
 	}
 
 	@Override

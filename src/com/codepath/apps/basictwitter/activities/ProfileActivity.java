@@ -4,17 +4,35 @@ import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.basictwitter.R;
 import com.codepath.apps.basictwitter.TwitterApp;
+import com.codepath.apps.basictwitter.fragments.TweetsListFragment;
+import com.codepath.apps.basictwitter.models.Tweet;
 import com.codepath.apps.basictwitter.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class ProfileActivity extends FragmentActivity {
+public class ProfileActivity
+		extends FragmentActivity
+		implements
+				TweetsListFragment.OnTweetClickedListener,
+				TweetsListFragment.OnProfileIconClickedListener {
 	static final String SCREEN_NAME_EXTRA = "screen_name";
+
+	@Override
+	public void onProfileIconClicked(ImageView profile_icon) {
+		// Do not do anything. The profile view contains only this user's
+		// tweets so there is no sense in launching another profile activity.
+	}
+
+	@Override
+	public void onTweetClicked(Tweet tweet) {
+		// TODO: Launch detailed tweet view.
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +42,8 @@ public class ProfileActivity extends FragmentActivity {
 		// Load screen name, if available.
 		String screen_name = getIntent().getStringExtra(SCREEN_NAME_EXTRA);
 		loadProfileInfo(screen_name);
+
+		// TODO: Load a particular user's timeline.
 	}
 
 	private void loadProfileInfo(String screen_name) {

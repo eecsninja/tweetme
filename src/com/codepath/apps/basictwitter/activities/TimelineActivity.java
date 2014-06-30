@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.codepath.apps.basictwitter.R;
 import com.codepath.apps.basictwitter.fragments.HomeTimelineFragment;
@@ -21,7 +22,9 @@ import com.codepath.apps.basictwitter.models.User;
 
 public class TimelineActivity
 		extends FragmentActivity
-		implements TweetsListFragment.OnTweetClickedListener {
+		implements
+				TweetsListFragment.OnTweetClickedListener,
+				TweetsListFragment.OnProfileIconClickedListener {
 	// Handles to fragments.
 	TweetsListFragment home_timeline = null;
 	TweetsListFragment mentions_timeline = null;
@@ -88,10 +91,15 @@ public class TimelineActivity
 		startActivityForResult(intent, TweetViewActivity.TWEET_VIEW_CODE);
 	}
 
-	// View the user's profile.
-	public void doProfileView(MenuItem item) {
-		Intent intent = new Intent(this, ProfileActivity.class);
-		startActivity(intent);
+	@Override
+	public void onProfileIconClicked(ImageView profile_icon) {
+		// View the user's profile.
+		viewUserProfile((String) profile_icon.getTag());
+	}
+
+	public void doProfileView(MenuItem menu) {
+		// View the current user's profile.
+		viewUserProfile(null);
 	}
 
 	private void setupTabs() {
@@ -137,5 +145,13 @@ public class TimelineActivity
 					(TweetsListFragment) getSupportFragmentManager()
 							.findFragmentByTag(MENTIONS_TIMELINE_TAG);
 		}
+	}
+
+	// View a user's profile, with the user indicated by |screen_name|.
+	private void viewUserProfile(String screen_name) {
+		Intent intent = new Intent(this, ProfileActivity.class);
+		intent.putExtra(ProfileActivity.SCREEN_NAME_EXTRA,
+						screen_name);
+		startActivity(intent);
 	}
 }

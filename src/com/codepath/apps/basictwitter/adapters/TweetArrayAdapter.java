@@ -13,14 +13,20 @@ import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
-	public TweetArrayAdapter(Context context, List<Tweet> tweet_list) {
+	OnClickListener icon_click_listener;
+
+	public TweetArrayAdapter(
+			Context context, List<Tweet> tweet_list,
+			OnClickListener icon_click_listener) {
 		super(context, 0, tweet_list);
+		this.icon_click_listener = icon_click_listener;
 	}
 
 	@Override
@@ -55,6 +61,9 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		// Tag the profile image with the screen name. This allows it get
 		// the screen name in response to being clicked.
 		profile_image.setTag(tweet.getUser().getScreenName());
+
+		// Set click listener for profile icon.
+		profile_image.setOnClickListener(icon_click_listener);
 
 		return view;
 	}
