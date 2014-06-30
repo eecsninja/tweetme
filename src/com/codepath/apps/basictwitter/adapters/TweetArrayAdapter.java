@@ -52,6 +52,10 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		tweet_body_field.setText(tweet.getBody());
 		timestamp_field.setText(getRelativeTimeAgo(tweet.getTimestamp()));
 
+		// Tag the profile image with the screen name. This allows it get
+		// the screen name in response to being clicked.
+		profile_image.setTag(tweet.getUser().getScreenName());
+
 		return view;
 	}
 
