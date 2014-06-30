@@ -5,6 +5,7 @@ import android.app.ActionBar.Tab;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.codepath.apps.basictwitter.R;
 import com.codepath.apps.basictwitter.fragments.HomeTimelineFragment;
@@ -22,9 +23,12 @@ public class TimelineActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Set up menu.
-		// TODO: This currently causes an exception, figure out why.
-		// getMenuInflater().inflate(R.menu.compose, menu);
+		getMenuInflater().inflate(R.menu.timeline, menu);
 		return true;
+	}
+
+	public void doCompose(MenuItem item) {
+		// TODO: Restore original compose functionality.
 	}
 
 	private void setupTabs() {
