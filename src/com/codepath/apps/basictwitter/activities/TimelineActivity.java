@@ -31,6 +31,11 @@ public class TimelineActivity extends FragmentActivity {
 		// TODO: Restore original compose functionality.
 	}
 
+	// View the user's profile.
+	public void doProfileView(MenuItem item) {
+		// TODO: Launch profile view activity.
+	}
+
 	private void setupTabs() {
 		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
