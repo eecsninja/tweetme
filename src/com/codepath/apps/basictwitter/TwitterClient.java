@@ -51,6 +51,12 @@ public class TwitterClient extends OAuthBaseClient {
 					handler, start_id, max_id);
 	}
 
+	public void getUserTimeline(AsyncHttpResponseHandler handler,
+								String start_id, String max_id) {
+		getTimeline(getApiUrl("statuses/user_timeline.json"),
+					handler, start_id, max_id);
+	}
+
 	public void doTweet(AsyncHttpResponseHandler handler, String status) {
 		// Make sure the status string is valid.
 		if (status == null) {

@@ -20,5 +20,9 @@
     <string name="reply_button_label">Reply</string>
     <string name="action_profile">View Profile</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="name_label">Name</string>
+    <string name="tagline_label">Tagline</string>
+    <string name="followers_label"># followers</string>
+    <string name="following_label"># following</string>
 
 </resources>
