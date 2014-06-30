@@ -14,15 +14,19 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ProfileActivity extends FragmentActivity {
+	static final String SCREEN_NAME_EXTRA = "screen_name";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
 
-		loadProfileInfo();
+		// Load screen name, if available.
+		String screen_name = getIntent().getStringExtra(SCREEN_NAME_EXTRA);
+		loadProfileInfo(screen_name);
 	}
 
-	private void loadProfileInfo() {
+	private void loadProfileInfo(String screen_name) {
 		TwitterApp.getRestClient().getProfileInfo(
 				new JsonHttpResponseHandler() {
 					@Override
@@ -33,7 +37,7 @@ public class ProfileActivity extends FragmentActivity {
 						// Update the views to reflect profile info.
 						populateProfileHeader(user);
 					}
-				});
+				}, screen_name);
 	}
 
 	// Fills out the view elements with user info.
