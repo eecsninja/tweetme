@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -13,17 +12,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.codepath.apps.basictwitter.R;
 import com.codepath.apps.basictwitter.TwitterApp;
 import com.codepath.apps.basictwitter.TwitterClient;
-import com.codepath.apps.basictwitter.activities.ComposeActivity;
 import com.codepath.apps.basictwitter.activities.TweetViewActivity;
 import com.codepath.apps.basictwitter.adapters.TweetArrayAdapter;
 import com.codepath.apps.basictwitter.helpers.EndlessScrollListener;
@@ -210,37 +207,6 @@ public class TweetsListFragment extends Fragment {
 			User user = tweet.getUser();
 			user.save();
 			tweet.save();
-		}
-	}
-	// Launch a new activity to compose a new tweet.
-	public void doCompose(MenuItem item) {
-		Intent intent = new Intent(getActivity(), ComposeActivity.class);
-		startActivityForResult(intent, ComposeActivity.COMPOSE_INTENT);
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode != Activity.RESULT_OK) {
-			return;
-		}
-		// A new tweet could be returned by either ComposeActivity or by
-		// TweetViewActivity (indirectly).
-		boolean do_get_tweet_result =
-				(requestCode == ComposeActivity.COMPOSE_INTENT) ||
-				(requestCode == TweetViewActivity.TWEET_VIEW_CODE &&
-				 data.getExtras().containsKey(ComposeActivity.INTENT_RESPONSE_TWEET));
-		if (do_get_tweet_result) {
-			// Get the newly posted tweet and add it to the timeline.
-			Tweet tweet =
-					(Tweet) data.getExtras()
-							.getSerializable(ComposeActivity.INTENT_RESPONSE_TWEET);
-			if (tweet.getId() > newest_id) {
-				newest_id = tweet.getId();
-			}
-			// TODO: This does not take into account the possibility of other
-			// new tweets having been added to home timeline during the time it
-			// took to compose.
-			tweets_adapter.insert(tweet, 0);
 		}
 	}
 
