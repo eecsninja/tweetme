@@ -33,6 +33,8 @@ Optional stories:
 - Advanced: User can tap a tweet to display a "detailed" view of that tweet
 - Advanced: User can select "reply" from detail view to respond to a tweet
 - Advanced: User can open the twitter app offline and see last loaded tweets
+(Week 4)
+- Advanced: When a network request is sent, user sees an indeterminate progress indicator
 
 Demo recordings:
 - TweetMeDemoBasic.gif -- Login authentication, view home timeline, scroll down
