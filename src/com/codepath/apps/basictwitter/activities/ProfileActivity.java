@@ -25,6 +25,12 @@ public class ProfileActivity
 				TweetsListFragment.OnProfileIconClickedListener {
 	static final String SCREEN_NAME_EXTRA = "screen_name";
 
+	// Screen name of the user whose profile is being shown.
+	String screen_name;
+
+	// Fragment displaying the current user's timeline.
+	UserTimelineFragment user_timeline;
+
 	@Override
 	public void onProfileIconClicked(ImageView profile_icon) {
 		// Do not do anything. The profile view contains only this user's
@@ -47,14 +53,14 @@ public class ProfileActivity
 		setContentView(R.layout.activity_profile);
 
 		// Load screen name, if available.
-		String screen_name = getIntent().getStringExtra(SCREEN_NAME_EXTRA);
+		screen_name = getIntent().getStringExtra(SCREEN_NAME_EXTRA);
 		loadProfileInfo(screen_name);
 
 		// Create the user timeline fragment dynamically.
 		FragmentTransaction transaction =
 				getSupportFragmentManager().beginTransaction();
 		// Replace the container with UserTimelineFragment.
-		UserTimelineFragment user_timeline = new UserTimelineFragment();
+		user_timeline = new UserTimelineFragment();
 		user_timeline.setScreenName(screen_name);
 		transaction.replace(R.id.flTimelineFragment, user_timeline);
 		// Execute the changes specified
