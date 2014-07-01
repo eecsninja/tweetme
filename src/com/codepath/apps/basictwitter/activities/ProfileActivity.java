@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +26,8 @@ public class ProfileActivity
 		extends FragmentActivity
 		implements
 				TweetsListFragment.OnTweetClickedListener,
-				TweetsListFragment.OnProfileIconClickedListener {
+				TweetsListFragment.OnProfileIconClickedListener,
+				TweetsListFragment.NetworkRequestObserver {
 	static final String SCREEN_NAME_EXTRA = "screen_name";
 
 	// Screen name of the user whose profile is being shown.
@@ -71,9 +73,25 @@ public class ProfileActivity
 		}
 	}
 
+	// Inherited from TweetsListFragment.NetworkRequestObserver.
+	@Override
+	public void onNetworkRequestBegin() {
+		setProgressBarIndeterminateVisibility(true);
+	}
+
+	// Inherited from TweetsListFragment.NetworkRequestObserver.
+	@Override
+	public void onNetworkRequestEnd() {
+		setProgressBarIndeterminateVisibility(false);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// MUST request the feature before setting content view
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
 		setContentView(R.layout.activity_profile);
 
 		// Load screen name, if available.

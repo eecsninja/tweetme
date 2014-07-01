@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.ImageView;
 
 import com.codepath.apps.basictwitter.R;
@@ -24,7 +25,8 @@ public class TimelineActivity
 		extends FragmentActivity
 		implements
 				TweetsListFragment.OnTweetClickedListener,
-				TweetsListFragment.OnProfileIconClickedListener {
+				TweetsListFragment.OnProfileIconClickedListener,
+				TweetsListFragment.NetworkRequestObserver {
 	// Handles to fragments.
 	TweetsListFragment home_timeline = null;
 	TweetsListFragment mentions_timeline = null;
@@ -35,7 +37,11 @@ public class TimelineActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_timeline);
+
+		// MUST request the feature before setting content view
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
+        setContentView(R.layout.activity_timeline);
 		setupTabs();
 	}
 
@@ -100,6 +106,18 @@ public class TimelineActivity
 	public void doProfileView(MenuItem menu) {
 		// View the current user's profile.
 		viewUserProfile(null);
+	}
+
+	// Inherited from TweetsListFragment.NetworkRequestObserver.
+	@Override
+	public void onNetworkRequestBegin() {
+		setProgressBarIndeterminateVisibility(true);
+	}
+
+	// Inherited from TweetsListFragment.NetworkRequestObserver.
+	@Override
+	public void onNetworkRequestEnd() {
+		setProgressBarIndeterminateVisibility(false);
 	}
 
 	private void setupTabs() {

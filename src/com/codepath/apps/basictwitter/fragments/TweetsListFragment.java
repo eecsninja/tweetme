@@ -55,6 +55,8 @@ public class TweetsListFragment extends Fragment {
 	OnTweetClickedListener tweet_clicked_listener;
 	// For listening to profile icon clicks.
 	OnProfileIconClickedListener profile_icon_clicked_listener;
+	// For listening to network requests.
+	NetworkRequestObserver network_request_observer;
 
 	// Custom JSON response handler.
 	protected class JSONHandler extends JsonHttpResponseHandler {
@@ -66,6 +68,8 @@ public class TweetsListFragment extends Fragment {
 		}
 		@Override
 		public void onSuccess(JSONArray array) {
+			network_request_observer.onNetworkRequestEnd();
+
 			ArrayList<Tweet> new_tweets = Tweet.fromJSONArray(array);
 			// Add these to the TimelineActivity's collection of tweets.
 			addTweets(new_tweets);
@@ -80,6 +84,7 @@ public class TweetsListFragment extends Fragment {
 
 		@Override
 		public void onFailure(Throwable e, String s) {
+			network_request_observer.onNetworkRequestEnd();
 			Log.d("DEBUG", e.toString());
 			Log.d("DEBUG", s.toString());
 		}
@@ -93,6 +98,13 @@ public class TweetsListFragment extends Fragment {
 	// Listener interface for handling clicks on profile icons.
 	public interface OnProfileIconClickedListener {
 		public void onProfileIconClicked(ImageView profile_icon);
+	}
+
+	// Listener for network requests.
+	public interface NetworkRequestObserver {
+		// Called when a network request begins and ends, respectively.
+		public void onNetworkRequestBegin();
+		public void onNetworkRequestEnd();
 	}
 
 	@Override
@@ -111,6 +123,13 @@ public class TweetsListFragment extends Fragment {
 		} else {
 			throw new ClassCastException(activity.toString()
 					+ " must implement TweetsListFragment.OnProfileIconClickedListener");
+		}
+		// Get network request observer.
+		if (activity instanceof NetworkRequestObserver) {
+			network_request_observer = (NetworkRequestObserver) activity;
+		} else {
+			throw new ClassCastException(activity.toString()
+					+ " must implement TweetsListFragment.NetworkRequestObserver");
 		}
 	}
 
@@ -294,6 +313,9 @@ public class TweetsListFragment extends Fragment {
 		if (has_internet) {
 			// Otherwise, load from Twitter API if connected.
 			getTimeline(new JSONHandler(refresh), start_id, max_id);
+
+			// Tell the network request observer that a request is underway.
+			network_request_observer.onNetworkRequestBegin();
 		}
 	}
 
