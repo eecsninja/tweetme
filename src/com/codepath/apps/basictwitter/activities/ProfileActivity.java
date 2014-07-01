@@ -1,7 +1,10 @@
 package com.codepath.apps.basictwitter.activities;
 
+import java.util.ArrayList;
+
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -45,6 +48,27 @@ public class ProfileActivity
 		Intent intent = new Intent(this, TweetViewActivity.class);
 		intent.putExtra(TweetViewActivity.INTENT_TWEET_VIEW, tweet);
 		startActivityForResult(intent, TweetViewActivity.TWEET_VIEW_CODE);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode != Activity.RESULT_OK) {
+			return;
+		}
+		// A new tweet could be returned indirectly by TweetViewActivity.
+		boolean do_get_tweet_result =
+				requestCode == TweetViewActivity.TWEET_VIEW_CODE &&
+				data.getExtras().containsKey(ComposeActivity.INTENT_RESPONSE_TWEET);
+		if (do_get_tweet_result && screen_name == null) {
+			// If the profile being viewed is the current user's profile, add the
+			// new tweet to the timeline.
+			Tweet tweet =
+					(Tweet) data.getExtras()
+							.getSerializable(ComposeActivity.INTENT_RESPONSE_TWEET);
+			ArrayList<Tweet> tweets = new ArrayList<Tweet>();
+			tweets.add(tweet);
+			user_timeline.addTweets(tweets);
+		}
 	}
 
 	@Override
