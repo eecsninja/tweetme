@@ -35,6 +35,13 @@ public class User extends Model implements Serializable {
 		super();
 	}
 
+	public User(long uid, String name, String screen_name, String profile_image_url) {
+		this.uid = uid;
+		this.name = name;
+		this.screen_name = screen_name;
+		this.profile_image_url = profile_image_url;
+	}
+
 	public static User fromJSON(JSONObject object) {
 		User user = new User();
 		try {

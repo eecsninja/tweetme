@@ -17,6 +17,7 @@ import com.codepath.apps.basictwitter.R;
 import com.codepath.apps.basictwitter.TwitterApp;
 import com.codepath.apps.basictwitter.fragments.TweetsListFragment;
 import com.codepath.apps.basictwitter.fragments.UserTimelineFragment;
+import com.codepath.apps.basictwitter.helpers.StoredAccountInfo;
 import com.codepath.apps.basictwitter.models.Tweet;
 import com.codepath.apps.basictwitter.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -119,6 +120,9 @@ public class ProfileActivity
 						getActionBar().setTitle("@" + user.getScreenName());
 						// Update the views to reflect profile info.
 						populateProfileHeader(user);
+
+						// Store the user info in shared preferences.
+						StoredAccountInfo.storeUserInfo(ProfileActivity.this, user);
 					}
 				}, screen_name);
 	}
