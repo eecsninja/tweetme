@@ -2,6 +2,7 @@ package com.codepath.apps.basictwitter.activities;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -32,7 +33,12 @@ public class ProfileActivity
 
 	@Override
 	public void onTweetClicked(Tweet tweet) {
-		// TODO: Launch detailed tweet view.
+		// Launches a TweetViewActivity to view a single tweet.
+		// TODO: This is duplicated from TimelineActivity. See if it can be
+		// shared.
+		Intent intent = new Intent(this, TweetViewActivity.class);
+		intent.putExtra(TweetViewActivity.INTENT_TWEET_VIEW, tweet);
+		startActivityForResult(intent, TweetViewActivity.TWEET_VIEW_CODE);
 	}
 
 	@Override
