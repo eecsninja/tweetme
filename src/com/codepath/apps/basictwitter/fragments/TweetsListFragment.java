@@ -307,7 +307,10 @@ public class TweetsListFragment extends Fragment {
 					Tweet.getTweetsFromDB(null, start_id, max_id);
 			if (!db_tweets.isEmpty()) {
 				addTweets(db_tweets);
-				return;
+				// Modify the arguments if some cached tweets were loaded.
+				// This sets up the subsequent timeline request to load
+				// only newer tweets.
+				start_id = newest_id + 1;
 			}
 		}
 		if (has_internet) {
