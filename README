@@ -4,7 +4,7 @@ TweetMe: A custom Twitter client app
 CodePath Android Bootcamp Project #3
 
 Time taken (week 3): 14 hours
-Time taken (week 4): 10 hours
+Time taken (week 4): 14 hours
 
 Required stories:
 - User can sign in to Twitter using OAuth login
@@ -35,6 +35,7 @@ Optional stories:
 - Advanced: User can open the twitter app offline and see last loaded tweets
 (Week 4)
 - Advanced: When a network request is sent, user sees an indeterminate progress indicator
+- All timelines (home, mentions, user) are now loadable from the SQL database.
 
 Demo recordings:
 - TweetMeDemoBasic.gif -- Login authentication, view home timeline, scroll down
