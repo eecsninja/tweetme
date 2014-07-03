@@ -2,6 +2,7 @@ package com.codepath.apps.basictwitter;
 
 import android.content.Context;
 
+import com.activeandroid.ActiveAndroid;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -30,6 +31,8 @@ public class TwitterApp extends com.activeandroid.app.Application {
 		.defaultDisplayImageOptions(defaultOptions)
 		.build();
 		ImageLoader.getInstance().init(config);
+
+		ActiveAndroid.setLoggingEnabled(true);
 	}
 
 	public static TwitterClient getRestClient() {
