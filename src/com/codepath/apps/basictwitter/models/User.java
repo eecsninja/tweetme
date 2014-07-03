@@ -1,6 +1,7 @@
 package com.codepath.apps.basictwitter.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,6 +9,8 @@ import org.json.JSONObject;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.From;
+import com.activeandroid.query.Select;
 
 @Table(name = "User")
 public class User extends Model implements Serializable {
@@ -57,6 +60,17 @@ public class User extends Model implements Serializable {
 			return null;
 		}
 		return user;
+	}
+
+	public static User getUserByScreenName(String screen_name) {
+		From query = new Select().from(User.class);
+		query = query.where("screen_name = ?", screen_name);
+		List<User> result = query.execute();
+		if (result.isEmpty()) {
+			return null;
+		}
+		// Return the first User found, if any.
+		return result.get(0);
 	}
 
 	public String getName() {
