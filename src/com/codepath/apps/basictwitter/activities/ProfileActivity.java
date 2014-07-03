@@ -121,8 +121,11 @@ public class ProfileActivity
 						// Update the views to reflect profile info.
 						populateProfileHeader(user);
 
-						// Store the user info in shared preferences.
-						StoredAccountInfo.storeUserInfo(ProfileActivity.this, user);
+						// Store the user info in shared preferences if it is the
+						// current user, as indicated by |screen_name| == null.
+						if (ProfileActivity.this.screen_name == null) {
+							StoredAccountInfo.storeUserInfo(ProfileActivity.this, user);
+						}
 					}
 				}, screen_name);
 	}
