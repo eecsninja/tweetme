@@ -30,7 +30,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 			long max_id) {
 		User current_user = StoredAccountInfo.loadUserInfo(getActivity());
 		if (current_user == null) {
-			return null;
+			return new ArrayList<Tweet>();
 		}
 		return Tweet.getTweetsFromDB(
 				current_user, Tweet.TweetType.TWEET_TYPE_MENTIONS, start_id, max_id);
