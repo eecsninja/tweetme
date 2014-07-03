@@ -31,6 +31,10 @@ public class Tweet extends Model implements Serializable {
 	private String timestamp;	// Time this tweet was created.
 	@Column(name = "user")
 	private User user;
+	// Copy of the screen name from |user|. This is used for querying purposes.
+	// TODO: Figure out how to query the screen name from |user| directly.
+	@Column(name = "user_screen_name")
+	private String screen_name;
 
 	// The default constructor is required for ActiveAndroid's Model class.
 	public Tweet() {
@@ -45,6 +49,7 @@ public class Tweet extends Model implements Serializable {
 			tweet.uid = json.getLong("id");
 			tweet.timestamp = json.getString("created_at");
 			tweet.user = User.fromJSON(json.getJSONObject("user"));
+			tweet.screen_name = tweet.user.getScreenName();
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;
