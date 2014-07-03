@@ -44,3 +44,9 @@ Demo recordings:
 - TweetMeDemoComponseAndExtras.gif -- Compose new tweets, pull down to refresh,
   open detailed view of tweet, tweet a reply.
 - TweetMeDemoEndlessScroll.gif -- Endless scroll with defect fixed.
+(Week 4)
+- TweetMeDemoWithFragments.gif -- Basic demo of multiple timelines using fragments.
+- TweetMeDemoViewProfile.gif -- Profile view activity.
+- TweetMeDemoFragmentsRefresh.gif -- Pulling down to refresh.
+- TweetMeDemoFragmentsOffline.gif -- Loading from SQL database.
+
