@@ -313,11 +313,8 @@ public abstract class TweetsListFragment extends Fragment {
 	}
 
 	// Loads a timeline from the Twitter client.
-	protected void getTimeline(
-			AsyncHttpResponseHandler handler, long start_id, long max_id) {
-		// This does nothing, because it is part of a generic fragment.
-		// Derived classes should call a particular timeline function.
-	}
+	abstract protected void getTimeline(
+			AsyncHttpResponseHandler handler, long start_id, long max_id);
 
 	// Loads cached tweets for the particular timeline.
 	abstract protected ArrayList<Tweet> getTweetsFromDatabaseForTimeline(
