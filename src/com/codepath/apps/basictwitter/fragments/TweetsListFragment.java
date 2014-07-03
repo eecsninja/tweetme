@@ -33,7 +33,7 @@ import eu.erikw.PullToRefreshListView;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
 
 // Generic tweet timeline container.
-public class TweetsListFragment extends Fragment {
+public abstract class TweetsListFragment extends Fragment {
 	// Handles to views.
 	protected ArrayList<Tweet> tweets;
 	protected TweetArrayAdapter tweets_adapter;
@@ -41,11 +41,6 @@ public class TweetsListFragment extends Fragment {
 
 	// Used to access Twitter API.
 	protected TwitterClient client;
-
-	// Should loaded tweets be saved to database?
-	// TODO: this should always be the case, but using this flag
-	// to temporarily disable database access for some timelines.
-	protected boolean save_to_db = false;
 
 	// Store the oldest and newest tweet IDs.
 	long oldest_id = Long.MAX_VALUE;
@@ -77,9 +72,7 @@ public class TweetsListFragment extends Fragment {
 				tweets_view.onRefreshComplete();
 			}
 			// Store newly retrieved tweets in database.
-			if (save_to_db) {
-				saveTweetsToDB(new_tweets);
-			}
+			saveTweetsToDB(new_tweets);
 		}
 
 		@Override
@@ -302,16 +295,13 @@ public class TweetsListFragment extends Fragment {
 			warnOfLackOfInternetConnectivity();
 		}
 		// If there are tweets cached in the database, load those.
-		if (save_to_db) {
-			ArrayList<Tweet> db_tweets =
-					Tweet.getTweetsFromDB(null, start_id, max_id);
-			if (!db_tweets.isEmpty()) {
-				addTweets(db_tweets);
-				// Modify the arguments if some cached tweets were loaded.
-				// This sets up the subsequent timeline request to load
-				// only newer tweets.
-				start_id = newest_id + 1;
-			}
+		ArrayList<Tweet> db_tweets = getTweetsFromDatabaseForTimeline(start_id, max_id);
+		if (!db_tweets.isEmpty()) {
+			addTweets(db_tweets);
+			// Modify the arguments if some cached tweets were loaded.
+			// This sets up the subsequent timeline request to load
+			// only newer tweets.
+			start_id = newest_id + 1;
 		}
 		if (has_internet) {
 			// Otherwise, load from Twitter API if connected.
@@ -328,4 +318,8 @@ public class TweetsListFragment extends Fragment {
 		// This does nothing, because it is part of a generic fragment.
 		// Derived classes should call a particular timeline function.
 	}
+
+	// Loads cached tweets for the particular timeline.
+	abstract protected ArrayList<Tweet> getTweetsFromDatabaseForTimeline(
+			long start_id, long max_id);
 }

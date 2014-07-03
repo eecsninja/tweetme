@@ -23,6 +23,16 @@ public class Tweet extends Model implements Serializable {
 	// TODO: Allow varying numbers of tweets..
 	private static int NUM_TWEETS_PER_QUERY = 20;
 
+	// For selecting tweets from various timelines.
+	public enum TweetType {
+		// All tweets.
+		TWEET_TYPE_ALL,
+		// Tweets posted by the given user.
+		TWEET_TYPE_USER,
+		// Tweets that mention the given user.
+		TWEET_TYPE_MENTIONS,
+	}
+
 	@Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
 	private long uid;			// Unique ID of tweet.
 	@Column(name = "body")
@@ -79,22 +89,37 @@ public class Tweet extends Model implements Serializable {
 	// Get all tweets from a user. Pass in user=null to get tweets from
 	// all users.
 	public static ArrayList<Tweet> getTweetsFromDB(
-			User user, long min_uid, long max_uid) {
-		From query = new Select().from(Tweet.class);
+			User user, TweetType type, long min_uid, long max_uid) {
+		ArrayList<String> where_args = new ArrayList<String>();
 		if (user != null) {
-			query = query.where("user = ?", user.getId());
+			switch (type) {
+			case TWEET_TYPE_USER:
+				// Match by user as author.
+				where_args.add("user_screen_name = '" + user.getScreenName() + "'");
+				break;
+			case TWEET_TYPE_MENTIONS:
+				// Match by mention of user.
+				where_args.add("body LIKE '%" + "@" + user.getScreenName() + "%'");
+				break;
+			default:
+				// Do nothing. All tweets should be loaded.
+				break;
+			}
 		}
+		// Set upper and lower bounds.
+		if (min_uid != 0) {
+			where_args.add("remote_id >= " + min_uid);
+		}
+		if (max_uid != 0) {
+			where_args.add("remote_id <= " + max_uid);
+		}
+
+		From query = new Select().from(Tweet.class);
+		query.where(joinWhereConditions(where_args));
 		// Sort by ID, most recent first.
 		query = query.orderBy("remote_id DESC");
 		// Limit the number of queries.
 		query = query.limit(NUM_TWEETS_PER_QUERY);
-		// Set upper and lower bounds.
-		if (min_uid != 0) {
-			query = query.where("remote_id >= ?", (min_uid));
-		}
-		if (max_uid != 0) {
-			query = query.where("remote_id <= ?", Long.toString(max_uid));
-		}
 		List<Tweet> results = query.execute();
 
 		// Convert to array list.
@@ -120,5 +145,18 @@ public class Tweet extends Model implements Serializable {
 
 	public User getUser() {
 		return user;
+	}
+
+	// Joins a list of WHERE args together using AND, into one string.
+	// TODO: This has been fixed in a newer version of ActiveAndroid.
+	private static String joinWhereConditions(ArrayList<String> where_args) {
+		String where_string = "";
+		for (String arg : where_args) {
+			if (!where_string.isEmpty()) {
+				where_string += " AND ";
+			}
+			where_string += arg;
+		}
+		return where_string;
 	}
 }

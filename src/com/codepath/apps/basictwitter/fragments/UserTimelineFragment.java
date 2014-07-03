@@ -1,8 +1,13 @@
 package com.codepath.apps.basictwitter.fragments;
 
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import java.util.ArrayList;
 
 import android.os.Bundle;
+
+import com.codepath.apps.basictwitter.helpers.StoredAccountInfo;
+import com.codepath.apps.basictwitter.models.Tweet;
+import com.codepath.apps.basictwitter.models.User;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
 // Shows all tweets from the user.
 public class UserTimelineFragment extends TweetsListFragment {
@@ -13,8 +18,6 @@ public class UserTimelineFragment extends TweetsListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// Do not load from database for now.
-		save_to_db = false;
 	}
 
 	// Accessor to specify a particular user's screen name.
@@ -30,5 +33,25 @@ public class UserTimelineFragment extends TweetsListFragment {
 				screen_name,
 				getTweetIDString(start_id),
 				getTweetIDString(max_id));
+	}
+
+	@Override
+	protected ArrayList<Tweet> getTweetsFromDatabaseForTimeline(long start_id,
+			long max_id) {
+		User user = null;
+		// If screen_name == null, then this is attempting to load the current
+		// user's info.
+		if (screen_name != null) {
+			user = User.getUserByScreenName(screen_name);
+		} else {
+			user = StoredAccountInfo.loadUserInfo(getActivity());
+		}
+		// If there is no current account info stored yet, then
+		// don't return anything.
+		if (user == null) {
+			return new ArrayList<Tweet>();
+		}
+		return Tweet.getTweetsFromDB(
+				user, Tweet.TweetType.TWEET_TYPE_USER, start_id, max_id);
 	}
 }
